@@ -626,7 +626,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Flappy Bird Sprite Sheet_15
+      name: dot
       rect:
         serializedVersion: 2
         x: 496
@@ -1866,7 +1866,7 @@ TextureImporter:
         width: 6
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1888,7 +1888,7 @@ TextureImporter:
         width: 5
         height: 5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1910,7 +1910,7 @@ TextureImporter:
         width: 5
         height: 5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1941,7 +1941,6 @@ TextureImporter:
     nameFileIdTable:
       BG day: 3757172894055703528
       BG night: 5726745022227689414
-      Flappy Bird Sprite Sheet_15: 8718464509617232868
       Flappy Bird Sprite Sheet_19: 2338443898329448914
       Flappy Bird Sprite Sheet_20: 406284251910272961
       Flappy Bird Sprite Sheet_21: 4791098190544687425
@@ -1968,6 +1967,7 @@ TextureImporter:
       blue fly 2: 4868738538111019568
       bronze medal: -4534802380502643524
       copyright: 3776087737446599236
+      dot: 8718464509617232868
       empty medal: 4953250962587613789
       flappy bird: -6319178907708615005
       floor: -8045490185900713557
