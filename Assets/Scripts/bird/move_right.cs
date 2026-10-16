@@ -18,6 +18,10 @@ public class move_right : MonoBehaviour
         {
             started = true;
         }
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            started = true;
+        }
     }
     void FixedUpdate()
     {

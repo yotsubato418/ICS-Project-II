@@ -32,21 +32,21 @@ public class Jump : MonoBehaviour
             Flap();
         }
 
-        // Rotate based on vertical velocity
+        // rotate based on vertical velocity
         float targetRotation;
 
         if (rb.linearVelocity.y > 0)
         {
-            // Bird moving upward
-            targetRotation = upwardRotation;
+            // bird moving upward
+            targetRotation = upwardRotation; // precaution
         }
         else
         {
-            // Bird falling
+            // bird falling
             targetRotation = downwardRotation;
         }
 
-        // Smooth rotation
+        // smooth rotation
         float currentRotation = transform.eulerAngles.z;
 
         float newRotation = Mathf.LerpAngle(
@@ -62,10 +62,10 @@ public class Jump : MonoBehaviour
 
     void Flap()
     {
-        // Reset downward momentum and jump
+        // reset downward momentum and jump
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, flapStrength);
 
-        // Immediately tilt upward
+        // immediately tilt upward
         transform.rotation = Quaternion.Euler(
             0, 0, upwardRotation
         );

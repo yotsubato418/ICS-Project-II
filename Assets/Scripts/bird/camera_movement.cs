@@ -2,21 +2,31 @@ using UnityEngine;
 
 public class camera_movement : MonoBehaviour
 {
-    private Transform camera;
+    private Transform bird;
+    private BirdDeath birdDeath;
     private float xOffset;
     private Vector3 tempPos;
+
     void Start()
     {
         GameObject birdObj = GameObject.FindWithTag("Player");
-        camera = birdObj.transform;
-        xOffset = transform.position.x - camera.position.x;
+
+        bird = birdObj.transform;
+        birdDeath = birdObj.GetComponent<BirdDeath>();
+
+        xOffset = transform.position.x - bird.position.x;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
+        // exit method when bird dies
+        if (birdDeath == null || birdDeath.IsDead)
+        {
+            return;
+        }
+
         tempPos = transform.position;
-        tempPos.x = camera.position.x + xOffset;
+        tempPos.x = bird.position.x + xOffset;
         transform.position = tempPos;
     }
 }

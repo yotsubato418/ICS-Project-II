@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6352637691940988330}
   m_Layer: 0
   m_Name: LOWER green pipe
-  m_TagString: Untagged
+  m_TagString: Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1335811699
   m_SortingLayer: 2
-  m_SortingOrder: 100
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7960617192498981074, guid: bcb6547c517b44d48ab2a742378908b8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
