@@ -13,7 +13,7 @@ public class background_rep : MonoBehaviour
     void Start()
     {
         width = bgPrefab.GetComponent<SpriteRenderer>().sprite.bounds.size.x * bgPrefab.transform.localScale.x;
-        nextX = transform.position.x - width;
+        nextX = transform.position.x - 2 * width;
     }
 
     // Update is called once per frame
