@@ -63,7 +63,7 @@ public class Jump : MonoBehaviour
     void Flap()
     {
         // Reset downward momentum and jump
-        rb.linearVelocity = new Vector2(0, flapStrength);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, flapStrength);
 
         // Immediately tilt upward
         transform.rotation = Quaternion.Euler(
