@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BirdDeath : MonoBehaviour
 {
@@ -66,7 +67,8 @@ public class BirdDeath : MonoBehaviour
 
         if (birdRenderer.bounds.max.y < bottomEdge)
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
