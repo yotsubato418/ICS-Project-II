@@ -25,7 +25,6 @@
             lowerTopOffset = GetTopOffset(lowerPipe);
         }
 
-        // Update is called once per frame
         void LateUpdate()
         {
             while (nextX < transform.position.x + maxPipe * gapX)

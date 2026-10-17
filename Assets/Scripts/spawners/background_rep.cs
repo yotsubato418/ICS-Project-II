@@ -4,8 +4,8 @@ using System.Collections.Generic;
 public class background_rep : MonoBehaviour
 {
     public GameObject bgPrefab;
-    public int maxBlock = 20;
-    public int minBlock = 3;
+    public int maxBlock = 2;
+    public int minBlock = 1;
 
     private float width;
     private float nextX;
