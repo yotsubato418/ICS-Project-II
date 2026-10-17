@@ -52,5 +52,8 @@ TagManager:
   - name: Score Text
     uniqueID: 2284772765
     locked: 0
+  - name: PowerUps
+    uniqueID: 4156665733
+    locked: 0
   m_RenderingLayers:
   - Default

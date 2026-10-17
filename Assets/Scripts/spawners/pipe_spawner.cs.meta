@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 23c1e13c4c34e4006b438ff062c52b4b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - upperPipe: {fileID: 4160829391017412515, guid: 973c9ab5e6441ed499bee8e80887c3e6, type: 3}
+  - lowerPipe: {fileID: 8530715811645248135, guid: 813f3d7a24910304196c0a92c30a078c, type: 3}
+  - scoreZone: {fileID: 4896908784579272403, guid: 8f1d7df5ff96a402ebe484bcdebacc2a, type: 3}
+  - shieldPrefab: {fileID: 6732105853241790052, guid: 7fd549286b528d74493af403251bfc87, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

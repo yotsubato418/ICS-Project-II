@@ -6,6 +6,7 @@
         public GameObject upperPipe;
         public GameObject lowerPipe;
         public GameObject scoreZone;
+        public GameObject shieldPrefab;//shield prefab
         public float gapX = 4f;
         public float gapY = 2f;
         public float minY = -1.5f;
@@ -35,14 +36,33 @@
                 Vector3 upperPos = new Vector3(nextX, centerY + gapY / 2f - upperBottomOffset, upperPipe.transform.position.z);
                 Vector3 lowerPos = new Vector3(nextX, centerY - gapY / 2f - lowerTopOffset, lowerPipe.transform.position.z);
                 Vector3 zonePos = new Vector3(nextX, centerY, upperPipe.transform.position.z);
+
                 pipes.Enqueue(Instantiate(upperPipe, upperPos, Quaternion.identity));
                 pipes.Enqueue(Instantiate(lowerPipe, lowerPos, Quaternion.identity));
+
+                if (Random.value < 0.1f) //collectable, each pipe has a 10 percent chance of having a collectable in it
+                {
+                    float shieldY = centerY + Random.Range(-gapY * 0.25f, gapY * 0.25f);
+
+                    Vector3 shieldPos = new Vector3(
+                        nextX,
+                        shieldY,
+                        upperPipe.transform.position.z
+                    );
+                    
+                    Debug.Log("Shield prefab exists: " + (shieldPrefab != null));//testing in the console! don't mind this
+
+                    GameObject shield = Instantiate(shieldPrefab, shieldPos, Quaternion.identity); 
+                    pipes.Enqueue(shield);
+                }
                 
+
                 GameObject zone = Instantiate(scoreZone, zonePos, Quaternion.identity);
                 zone.transform.localScale = new Vector3(zone.transform.localScale.x, gapY, 1f);
                 pipes.Enqueue(zone);
 
                 nextX += gapX;
+
             }
 
             while (pipes.Count > 0 && pipes.Peek().transform.position.x < transform.position.x - minPipe * gapX)
