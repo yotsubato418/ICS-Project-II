@@ -5,6 +5,7 @@
     {
         public GameObject upperPipe;
         public GameObject lowerPipe;
+        public GameObject scoreZone;
         public float gapX = 4f;
         public float gapY = 2f;
         public float minY = -1.5f;
@@ -33,8 +34,14 @@
 
                 Vector3 upperPos = new Vector3(nextX, centerY + gapY / 2f - upperBottomOffset, upperPipe.transform.position.z);
                 Vector3 lowerPos = new Vector3(nextX, centerY - gapY / 2f - lowerTopOffset, lowerPipe.transform.position.z);
+                Vector3 zonePos = new Vector3(nextX, centerY, upperPipe.transform.position.z);
                 pipes.Enqueue(Instantiate(upperPipe, upperPos, Quaternion.identity));
                 pipes.Enqueue(Instantiate(lowerPipe, lowerPos, Quaternion.identity));
+                
+                GameObject zone = Instantiate(scoreZone, zonePos, Quaternion.identity);
+                zone.transform.localScale = new Vector3(zone.transform.localScale.x, gapY, 1f);
+                pipes.Enqueue(zone);
+
                 nextX += gapX;
             }
 

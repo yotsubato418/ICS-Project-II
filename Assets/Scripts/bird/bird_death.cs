@@ -11,6 +11,7 @@ public class BirdDeath : MonoBehaviour
     private SpriteRenderer birdRenderer;
     private Movement movement;
     private Camera mainCamera;
+    private Score score;
 
     void Start()
     {
@@ -19,6 +20,7 @@ public class BirdDeath : MonoBehaviour
         birdRenderer = GetComponentInChildren<SpriteRenderer>();
         movement = GetComponent<Movement>();
         mainCamera = Camera.main;
+        score = GetComponent<Score>();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -32,6 +34,11 @@ public class BirdDeath : MonoBehaviour
     void Die()
     {
         IsDead = true;
+
+        if (score != null)
+        {
+            score.ResetScore();
+        }
 
         // stop horizontal movement and bounce upward
         rb.gravityScale = deathGravityScale;
