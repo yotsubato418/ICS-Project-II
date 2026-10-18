@@ -8,10 +8,10 @@ public class ShieldCollectible : MonoBehaviour
         {
             BirdSpeedBoost boost = other.GetComponent<BirdSpeedBoost>();
 
-            if (boost != null)
+            if (boost != null) //makes sure bird has the shield (collided w/ it)
             {
                 boost.ActivateBoost();
-                gameObject.SetActive(false);
+                gameObject.SetActive(false); //turns the shield off when the pigeon collects it!
             }
         }
     }

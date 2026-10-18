@@ -1,5 +1,6 @@
     using UnityEngine;
     using System.Collections.Generic;
+    using System;
 
     public class pipe_spawner : MonoBehaviour
     {
@@ -18,7 +19,7 @@
 
         private float upperBottomOffset;
         private float lowerTopOffset;
-        public int pipeCount = 0;
+        public int pipeCount = 0; //counts # of pipes for shield spawning
 
         private float nextX;
         private Queue<GameObject> pipes = new Queue<GameObject>();
@@ -33,7 +34,7 @@
         {
             while (nextX < transform.position.x + maxPipe * gapX)
             {
-                float centerY = Random.Range(minY, maxY);
+                float centerY = UnityEngine.Random.Range(minY, maxY);
 
                 Vector3 upperPos = new Vector3(nextX, centerY + gapY / 2f - upperBottomOffset, upperPipe.transform.position.z);
                 Vector3 lowerPos = new Vector3(nextX, centerY - gapY / 2f - lowerTopOffset, lowerPipe.transform.position.z);
@@ -42,9 +43,10 @@
                 pipes.Enqueue(Instantiate(upperPipe, upperPos, Quaternion.identity));
                 pipes.Enqueue(Instantiate(lowerPipe, lowerPos, Quaternion.identity));
 
-                if (pipeCount > 0 && pipeCount % 10 == 0) //collectable, each pipe has a 30 percent chance of having a collectable in it
+
+                if (pipeCount % 10 == 0) //collectable, every 10 pipes there's a collectable
                 {
-                     float shieldY = centerY;
+                     float shieldY = centerY; //positions shield in the middle of pipes
 
                     Vector3 shieldPos = new Vector3(
                         nextX,
@@ -53,8 +55,11 @@
                     );
                     
 
-                    GameObject shield = Instantiate(shieldPrefab, shieldPos, Quaternion.identity); 
-                    Debug.Log("Shield spawned at: " + shield.transform.position);
+                    GameObject shield = Instantiate(shieldPrefab, shieldPos, Quaternion.identity); //creates new shield using prefab
+                    shield.SetActive(true);
+                    shield.name = "TEST SHIELD";
+                    Debug.Log("Shield spawned at: " + shield.transform.position);//more testing stuff
+
                     pipes.Enqueue(shield);
                 }
                 
@@ -64,7 +69,7 @@
                 pipes.Enqueue(zone);
 
                 nextX += gapX;
-                pipeCount++;
+                pipeCount++; //adds pipes by 1 each time!
 
             }
 
