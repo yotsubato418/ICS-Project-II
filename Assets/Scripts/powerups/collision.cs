@@ -6,9 +6,13 @@ public class ShieldCollectible : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            gameObject.SetActive(false);
-             Debug.Log("Bird collected shield!");//test !!!!
+            BirdSpeedBoost boost = other.GetComponent<BirdSpeedBoost>();
 
+            if (boost != null)
+            {
+                boost.ActivateBoost();
+                gameObject.SetActive(false);
+            }
         }
     }
 }

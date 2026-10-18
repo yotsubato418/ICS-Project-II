@@ -7,6 +7,7 @@
         public GameObject lowerPipe;
         public GameObject scoreZone;
         public GameObject shieldPrefab;//shield prefab
+        
         public float gapX = 4f;
         public float gapY = 2f;
         public float minY = -1.5f;
@@ -17,6 +18,7 @@
 
         private float upperBottomOffset;
         private float lowerTopOffset;
+        public int pipeCount = 0;
 
         private float nextX;
         private Queue<GameObject> pipes = new Queue<GameObject>();
@@ -40,9 +42,9 @@
                 pipes.Enqueue(Instantiate(upperPipe, upperPos, Quaternion.identity));
                 pipes.Enqueue(Instantiate(lowerPipe, lowerPos, Quaternion.identity));
 
-                if (Random.value < 0.1f) //collectable, each pipe has a 10 percent chance of having a collectable in it
+                if (pipeCount > 0 && pipeCount % 10 == 0) //collectable, each pipe has a 30 percent chance of having a collectable in it
                 {
-                    float shieldY = centerY + Random.Range(-gapY * 0.25f, gapY * 0.25f);
+                     float shieldY = centerY;
 
                     Vector3 shieldPos = new Vector3(
                         nextX,
@@ -50,9 +52,9 @@
                         upperPipe.transform.position.z
                     );
                     
-                    Debug.Log("Shield prefab exists: " + (shieldPrefab != null));//testing in the console! don't mind this
 
                     GameObject shield = Instantiate(shieldPrefab, shieldPos, Quaternion.identity); 
+                    Debug.Log("Shield spawned at: " + shield.transform.position);
                     pipes.Enqueue(shield);
                 }
                 
@@ -62,6 +64,7 @@
                 pipes.Enqueue(zone);
 
                 nextX += gapX;
+                pipeCount++;
 
             }
 

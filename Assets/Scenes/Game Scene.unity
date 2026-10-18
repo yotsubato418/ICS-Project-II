@@ -551,6 +551,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Score
   score: 0
   scoreText: {fileID: 1875803615}
+--- !u!114 &1557311740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557311715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc0acc163b86c84280c32d2106f1856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BirdSpeedBoost
 --- !u!1 &1701697300
 GameObject:
   m_ObjectHideFlags: 0
@@ -919,6 +931,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4213220412318271812, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1557311732}
+    - targetCorrespondingSourceObject: {fileID: 4213220412318271812, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1557311740}
   m_SourcePrefab: {fileID: 100100000, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
