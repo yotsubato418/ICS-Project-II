@@ -56,7 +56,7 @@ public class BirdDeath : MonoBehaviour
 
     void Update()
     {
-        if (!IsDead || mainCamera == null || birdRenderer == null)
+        if (mainCamera == null || birdRenderer == null)
         {
             return;
         }
@@ -67,7 +67,7 @@ public class BirdDeath : MonoBehaviour
 
         if (birdRenderer.bounds.max.y < bottomEdge)
         {
-            // Destroy(gameObject);
+            Die();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }

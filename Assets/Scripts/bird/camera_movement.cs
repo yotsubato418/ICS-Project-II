@@ -19,7 +19,6 @@ public class camera_movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // exit method when bird dies
         if (birdDeath == null || birdDeath.IsDead)
         {
             return;
