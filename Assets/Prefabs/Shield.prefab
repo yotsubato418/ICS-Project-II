@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6524558771896276609}
   - component: {fileID: 6855653548460188730}
   - component: {fileID: 757398857726200953}
+  - component: {fileID: 7009042440543158215}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.7451, y: -0.9409, z: 0}
-  m_LocalScale: {x: 0.43, y: 0.4293, z: 1}
+  m_LocalScale: {x: 0.259247, y: 0.23529933, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,8 +79,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -138301563
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2389193319765324094, guid: ddf48b26692c7ca4c8517158a85a893d, type: 3}
@@ -128,3 +129,15 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.6900003
+--- !u!114 &7009042440543158215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732105853241790052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b866cca9937e46648925ee4d89ba3f71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShieldCollectible
