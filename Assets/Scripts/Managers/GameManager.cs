@@ -63,9 +63,6 @@ public class GameManager : MonoBehaviour
         {
             countdownText.gameObject.SetActive(true);
 
-            countdownText.text = "4\nPRESS SPACE/CLICK TO JUMP";
-            yield return new WaitForSeconds(1f);
-
             countdownText.text = "3\nPRESS SPACE/CLICK TO JUMP";
             yield return new WaitForSeconds(1f);
 
