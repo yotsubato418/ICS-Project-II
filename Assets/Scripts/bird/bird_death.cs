@@ -34,7 +34,10 @@ public class BirdDeath : MonoBehaviour
 
     void Die()
     {
-        IsDead = true;
+        if (IsDead) return; 
+        IsDead = true; 
+
+        FindFirstObjectByType<GameManager>().TriggerGameOver(); 
 
         if (score != null)
         {
@@ -67,8 +70,7 @@ public class BirdDeath : MonoBehaviour
 
         if (birdRenderer.bounds.max.y < bottomEdge)
         {
-            Die();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Die(); 
         }
     }
 }
