@@ -49,11 +49,14 @@ TagManager:
   - name: Sprites
     uniqueID: 1335811699
     locked: 0
+  - name: Score Text
+    uniqueID: 2284772765
+    locked: 0
   - name: PowerUps
     uniqueID: 4156665733
     locked: 0
-  - name: Score Text
-    uniqueID: 2284772765
+  - name: HUDs
+    uniqueID: 3102731959
     locked: 0
   m_RenderingLayers:
   - Default
