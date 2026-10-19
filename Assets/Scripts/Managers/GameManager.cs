@@ -6,23 +6,65 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("UI Panels")]
     public GameObject startScreenPanel;
     public GameObject gameOverScreenPanel;
-    public TextMeshProUGUI countdownText; // Drag your CountdownText here in Inspector
-    public MonoBehaviour birdMovementScript; // Drag your Bird's movement script here
+
+    [Header("Text Displays")]
+    public TextMeshProUGUI countdownText; 
+    public TextMeshProUGUI scoreText;      
+    public TextMeshProUGUI highScoreText;  
+
+    [Header("Player Reference")]
+    public MonoBehaviour birdMovementScript; 
+
+    private bool gameHasStarted = false;
+    private Rigidbody2D birdRb;
+    private float originalGravityScale = 1f;
+    private int currentScore = 0;
 
     void Start()
     {
-        // Freeze time and show start screen when game launches
+        // Freeze time while on the start screen
         Time.timeScale = 0f;
+
         if (startScreenPanel != null) startScreenPanel.SetActive(true);
         if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(false);
-        if (countdownText != null) countdownText.gameObject.SetActive(false);
+        
+        if (countdownText != null) 
+        {
+            countdownText.gameObject.SetActive(true);
+            countdownText.text = "PRESS SPACE TO START";
+        }
+
+        // Setup bird physics and disable movement until game starts
+        if (birdMovementScript != null)
+        {
+            birdRb = birdMovementScript.GetComponent<Rigidbody2D>();
+            birdMovementScript.enabled = false;
+
+            if (birdRb != null)
+            {
+                // Save original gravity before disabling physics
+                originalGravityScale = birdRb.gravityScale;
+                birdRb.gravityScale = 0f;
+                birdRb.linearVelocity = Vector2.zero;
+            }
+        }
     }
 
     void Update()
     {
-        // Check for R key to restart when Game Over screen is active
+        // Start game on Space key press
+        if (!gameHasStarted && startScreenPanel != null && startScreenPanel.activeSelf)
+        {
+            if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                StartGame();
+            }
+        }
+
+        // Restart game on R key press at Game Over
         if (gameOverScreenPanel != null && gameOverScreenPanel.activeSelf)
         {
             if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
@@ -34,54 +76,17 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (startScreenPanel != null) startScreenPanel.SetActive(false); // Hide title screen
-        StartCoroutine(StartCountdownRoutine());
-    }
+        gameHasStarted = true;
 
-    IEnumerator StartCountdownRoutine()
-    {
-        // Get the Bird's Rigidbody2D component
-        Rigidbody2D rb = null;
-        if (birdMovementScript != null)
+        if (startScreenPanel != null) startScreenPanel.SetActive(false);
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
+
+        Time.timeScale = 1f;
+
+        // Restore bird physics and input controls
+        if (birdRb != null)
         {
-            rb = birdMovementScript.GetComponent<Rigidbody2D>();
-            birdMovementScript.enabled = false; // Disable player input
-        }
-
-        // Freeze physics/gravity during countdown
-        float originalGravity = 1f;
-        if (rb != null)
-        {
-            originalGravity = rb.gravityScale; // Save original gravity setting
-            rb.gravityScale = 0f;              // Turn off gravity so pigeon stays frozen
-            rb.linearVelocity = Vector2.zero;  // Stop any existing movement
-        }
-
-        Time.timeScale = 1f; // Unfreeze time so coroutine runs smoothly
-
-        if (countdownText != null)
-        {
-            countdownText.gameObject.SetActive(true);
-
-            countdownText.text = "3\nPRESS SPACE/CLICK TO JUMP";
-            yield return new WaitForSeconds(1f);
-
-            countdownText.text = "2\nPRESS SPACE/CLICK TO JUMP";
-            yield return new WaitForSeconds(1f);
-
-            countdownText.text = "1\nPRESS SPACE/CLICK TO JUMP";
-            yield return new WaitForSeconds(1f);
-
-            countdownText.text = "bye\nbye";
-            yield return new WaitForSeconds(0.5f);
-
-            countdownText.gameObject.SetActive(false); // Hide text when done
-        }
-
-        // Restore gravity & re-enable bird controls!
-        if (rb != null)
-        {
-            rb.gravityScale = originalGravity;
+            birdRb.gravityScale = originalGravityScale;
         }
 
         if (birdMovementScript != null)
@@ -90,9 +95,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void AddScore(int amount = 1)
+    {
+        currentScore += amount;
+    }
+
     public void GameOver()
     {
         Time.timeScale = 0f;
+
+        // Load existing high score
+        int highScore = PlayerPrefs.GetInt("HighScore", 0);
+
+        // Update high score if current score is higher
+        if (currentScore > highScore)
+        {
+            highScore = currentScore;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+        }
+
+        // Assign UI values
+        if (scoreText != null) scoreText.text = "Score: " + currentScore;
+        if (highScoreText != null) highScoreText.text = "hiscore: " + highScore;
+
         if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(true);
     }
 
@@ -106,4 +132,4 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-} 
+}
