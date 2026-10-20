@@ -34,13 +34,8 @@ public class Movement : MonoBehaviour
     {
         if (!birdDeath.IsDead)
         {
-            bool pressed =
-                (Keyboard.current != null &&
-                 Keyboard.current.spaceKey.wasPressedThisFrame)
-                ||
-                (Mouse.current != null &&
-                 Mouse.current.leftButton.wasPressedThisFrame);
-
+            bool pressed = (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame) || (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame);
+            
             if (pressed)
             {
                 if (!started)
@@ -109,5 +104,19 @@ public class Movement : MonoBehaviour
         transform.rotation = Quaternion.Euler(
             0, 0, upwardRotation
         );
+        PlayFlapSound();
+    }
+
+    public void PlayFlapSound()
+    {
+        if (!started || birdDeath.IsDead)
+        {
+            return;
+        }
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayFlap();
+        }
     }
 }
