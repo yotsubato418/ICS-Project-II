@@ -602,6 +602,8 @@ MonoBehaviour:
   startOffset: 3
   maxPipe: 5
   minPipe: 5
+  shieldChance: 0.2
+  minPipesBetweenShields: 10
   pipeCount: 0
 --- !u!1 &619394800
 GameObject:
@@ -856,6 +858,8 @@ MonoBehaviour:
   startScreenPanel: {fileID: 459953860}
   gameOverScreenPanel: {fileID: 339433630}
   countdownText: {fileID: 2072297515}
+  scoreText: {fileID: 0}
+  highScoreText: {fileID: 0}
   birdMovementScript: {fileID: 1557311743}
 --- !u!4 &1221682537
 Transform:
