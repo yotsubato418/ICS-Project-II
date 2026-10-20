@@ -8,7 +8,7 @@ public class Score : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        scoreText.fontSize = 350;
+        scoreText.fontSize = 250;
         scoreText.color = Color.red;
         scoreText.outlineColor = Color.black;
         scoreText.outlineWidth = 0.25f;
