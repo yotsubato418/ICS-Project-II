@@ -17,9 +17,13 @@
         public int maxPipe = 5;
         public int minPipe = 5;
 
+        public float shieldChance = 0.5f;
+        public int minPipesBetweenShields = 10;
+
         private float upperBottomOffset;
         private float lowerTopOffset;
         public int pipeCount = 0; //counts # of pipes for shield spawning
+        private int lastShieldPipe = 0;
 
         private float nextX;
         private Queue<GameObject> pipes = new Queue<GameObject>();
@@ -44,9 +48,9 @@
                 pipes.Enqueue(Instantiate(lowerPipe, lowerPos, Quaternion.identity));
 
 
-                if (pipeCount % 10 == 0) //collectable, every 10 pipes there's a collectable
+                if (pipeCount - lastShieldPipe >= minPipesBetweenShields && UnityEngine.Random.value < shieldChance)
                 {
-                     float shieldY = centerY; //positions shield in the middle of pipes
+                    float shieldY = centerY; //positions shield in the middle of pipes
 
                     Vector3 shieldPos = new Vector3(
                         nextX,
@@ -61,6 +65,7 @@
                     Debug.Log("Shield spawned at: " + shield.transform.position);//more testing stuff
 
                     pipes.Enqueue(shield);
+                    lastShieldPipe = pipeCount;
                 }
                 
 
