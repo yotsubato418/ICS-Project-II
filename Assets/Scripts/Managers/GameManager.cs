@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     private float originalGravityScale = 1f;
     private int currentScore = 0;
 
+    private static bool skipStartScreen = false;
+
     void Start()
     {
         // Freeze time while on the start screen
@@ -50,6 +52,12 @@ public class GameManager : MonoBehaviour
                 birdRb.gravityScale = 0f;
                 birdRb.linearVelocity = Vector2.zero;
             }
+        }
+
+        if (skipStartScreen)
+        {
+            skipStartScreen = false;
+            StartGame();
         }
     }
 
@@ -130,6 +138,7 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f;
+        skipStartScreen = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
