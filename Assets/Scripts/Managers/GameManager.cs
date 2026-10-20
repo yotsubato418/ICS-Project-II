@@ -91,6 +91,11 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMusic();
+        }
+
         // Restore bird physics and input controls
         if (birdRb != null)
         {
