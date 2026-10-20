@@ -859,7 +859,13 @@ MonoBehaviour:
   musicSource: {fileID: 1080134762}
   music: {fileID: 8300000, guid: 3b27edefa78ec4694802acd0bd070409, type: 3}
   flapSound: {fileID: 8300000, guid: 59b2429af45d6452cb199c747ca94a51, type: 3}
-  flapVolume: 0.149
+  metalHitSound: {fileID: 8300000, guid: 8187250cc5bc443de9619eb8cb6ae211, type: 3}
+  brickHitSound: {fileID: 8300000, guid: 088f9c2ec988045448879ab0de2a46d4, type: 3}
+  collectSound: {fileID: 8300000, guid: c68e91b4694fe40fe9969b2ef8c6d5b9, type: 3}
+  musicVolume: 0.8
+  flapVolume: 0.15
+  hitVolume: 0.4
+  collectVolume: 0.35
 --- !u!4 &1080134761
 Transform:
   m_ObjectHideFlags: 0
@@ -1020,43 +1026,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1557311715 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4213220412318271812, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
-  m_PrefabInstance: {fileID: 8681086951748225700}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1557311732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1557311715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9da20cca82ba843399e2920b3fc3ef35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Score
-  score: 0
-  scoreText: {fileID: 1875803615}
---- !u!114 &1557311740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1557311715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bc0acc163b86c84280c32d2106f1856, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdSpeedBoost
 --- !u!114 &1557311743 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3469348429525843088, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
   m_PrefabInstance: {fileID: 8681086951748225700}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1557311715}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46b6adb2da3d96843aa83c65a17cd944, type: 3}
@@ -1602,16 +1577,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8353901980986216852, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
+      propertyPath: scoreText
+      value: 
+      objectReference: {fileID: 1875803615}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4213220412318271812, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1557311732}
-    - targetCorrespondingSourceObject: {fileID: 4213220412318271812, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1557311740}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

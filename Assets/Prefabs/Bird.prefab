@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 3469348429525843088}
   - component: {fileID: 8041702073583143449}
   - component: {fileID: 4691455819847926905}
+  - component: {fileID: 8353901980986216852}
+  - component: {fileID: 4391517573366790380}
   m_Layer: 0
   m_Name: Bird
   m_TagString: Player
@@ -212,3 +214,29 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.17, y: 0.12}
   m_Direction: 0
+--- !u!114 &8353901980986216852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4213220412318271812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da20cca82ba843399e2920b3fc3ef35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Score
+  score: 0
+  scoreText: {fileID: 0}
+--- !u!114 &4391517573366790380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4213220412318271812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc0acc163b86c84280c32d2106f1856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BirdSpeedBoost

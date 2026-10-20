@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5153148661378644075}
   m_Layer: 0
   m_Name: LOWER green pipe
-  m_TagString: Pipe
+  m_TagString: lowerPipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

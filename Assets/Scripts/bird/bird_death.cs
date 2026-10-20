@@ -26,8 +26,24 @@ public class BirdDeath : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!IsDead && collision.gameObject.CompareTag("Pipe"))
+        if (IsDead) return;
+
+        if (collision.gameObject.CompareTag("upperPipe"))
         {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayTopHit();
+            }
+
+            Die();
+        }
+        else if (collision.gameObject.CompareTag("lowerPipe"))
+        {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayBottomHit();
+            }
+
             Die();
         }
     }
