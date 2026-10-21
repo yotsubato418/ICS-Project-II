@@ -1130,8 +1130,8 @@ MonoBehaviour:
   metalHitSound: {fileID: 8300000, guid: 8187250cc5bc443de9619eb8cb6ae211, type: 3}
   brickHitSound: {fileID: 8300000, guid: 088f9c2ec988045448879ab0de2a46d4, type: 3}
   collectSound: {fileID: 8300000, guid: c68e91b4694fe40fe9969b2ef8c6d5b9, type: 3}
-  musicVolume: 0.8
-  flapVolume: 0.15
+  musicVolume: 0.643
+  flapVolume: 0.314
   hitVolume: 0.4
   collectVolume: 0.35
 --- !u!4 &1080134761
