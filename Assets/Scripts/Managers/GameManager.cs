@@ -57,6 +57,11 @@ public class GameManager : MonoBehaviour
     {
         if (startScreenPanel != null) startScreenPanel.SetActive(false);
         Time.timeScale = 1f;
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMusic();
+        }
 
         StartCoroutine(ActivateGameplayFlow());
     }
