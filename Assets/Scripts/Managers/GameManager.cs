@@ -7,15 +7,28 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("UI Panels & Text")]
     public GameObject startScreenPanel;
     public GameObject gameOverScreenPanel;
     public TextMeshProUGUI countdownText; 
-    public Movement birdMovementScript; // Drag your teammate's Movement script here in the Inspector!
+    public Movement birdMovementScript; // Your teammate's Movement script
+
+    [Header("Score UI")]
+    public TextMeshProUGUI currentScoreText;
+    public TextMeshProUGUI highScoreText;
+    public TextMeshProUGUI finalScoreText;     // Shown on Game Over screen
+    public TextMeshProUGUI finalHighScoreText; // Shown on Game Over screen
 
     private static bool skipTitleOnReload = false;
+    private int currentScore = 0;
+    private int highScore = 0;
 
     void Start()
     {
+        // Load saved high score
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        UpdateScoreUI();
+
         if (skipTitleOnReload)
         {
             skipTitleOnReload = false;
@@ -44,11 +57,6 @@ public class GameManager : MonoBehaviour
     {
         if (startScreenPanel != null) startScreenPanel.SetActive(false);
         Time.timeScale = 1f;
-
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlayMusic();
-        }
 
         StartCoroutine(ActivateGameplayFlow());
     }
@@ -102,10 +110,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // --- SCORE METHODS ---
+
+    public void AddScore(int amount)
+    {
+        currentScore += amount;
+
+        if (currentScore > highScore)
+        {
+            highScore = currentScore;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+        }
+
+        UpdateScoreUI();
+    }
+
+    void UpdateScoreUI()
+    {
+        if (currentScoreText != null) currentScoreText.text = "Score: " + currentScore;
+        if (highScoreText != null) highScoreText.text = "High Score: " + highScore;
+    }
+
+    // --- GAME OVER & RESTART ---
+
     public void GameOver()
     {
         Time.timeScale = 0f;
         if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(true);
+
+        // Populate Game Over text fields
+        if (finalScoreText != null) finalScoreText.text = "Score: " + currentScore;
+        if (finalHighScoreText != null) finalHighScoreText.text = "High Score: " + highScore;
     }
 
     public void TriggerGameOver()
