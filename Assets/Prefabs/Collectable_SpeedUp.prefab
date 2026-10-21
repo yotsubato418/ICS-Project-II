@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 757398857726200953}
   - component: {fileID: 7009042440543158215}
   m_Layer: 0
-  m_Name: Shield
+  m_Name: Collectable_SpeedUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -32,7 +32,6 @@ public class BirdSpeedBoost : MonoBehaviour // the first class, basically attach
 
         birdSprite.color = Color.pink;
 
-
         yield return new WaitForSeconds(powerUp.Duration);
 
         movement.moveSpeed = originalSpeed;
@@ -62,7 +61,7 @@ public class SpeedBoost
         get { return isActive; }
     }
 
-    public SpeedBoost(float boostMultiplier, float boostDuration)
+    public SpeedBoost(float boostMultiplier, float boostDuration) //constructor!
     {
         multiplier = boostMultiplier;
         duration = boostDuration;

@@ -50,21 +50,20 @@
 
                 if (pipeCount - lastShieldPipe >= minPipesBetweenShields && UnityEngine.Random.value < shieldChance)
                 {
-                    float shieldY = centerY; //positions shield in the middle of pipes
+                    float collectableY = centerY; //positions collectable in the middle of pipes
 
                     Vector3 shieldPos = new Vector3(
                         nextX,
-                        shieldY,
+                        collectableY,
                         upperPipe.transform.position.z
                     );
                     
 
-                    GameObject shield = Instantiate(shieldPrefab, shieldPos, Quaternion.identity); //creates new shield using prefab
-                    shield.SetActive(true);
-                    shield.name = "TEST SHIELD";
-                    Debug.Log("Shield spawned at: " + shield.transform.position);//more testing stuff
+                    GameObject collectable = Instantiate(shieldPrefab, shieldPos, Quaternion.identity); //creates new collectable using prefab
+                    collectable.SetActive(true);
+                    Debug.Log("Collectable spawned at: " + collectable.transform.position);//more testing stuff
 
-                    pipes.Enqueue(shield);
+                    pipes.Enqueue(collectable);
                     lastShieldPipe = pipeCount;
                 }
                 
