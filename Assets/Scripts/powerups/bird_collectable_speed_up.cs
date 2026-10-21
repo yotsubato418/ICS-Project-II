@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BirdSpeedBoost : MonoBehaviour
+public class BirdSpeedBoost : MonoBehaviour // the first class, basically attaches stuff to gameobject!
 {
     private SpeedBoost powerUp;
     private Movement movement;
