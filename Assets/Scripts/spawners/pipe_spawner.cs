@@ -4,11 +4,13 @@
 
     public class pipe_spawner : MonoBehaviour
     {
+        [Header("Prefabs")]
         public GameObject upperPipe;
         public GameObject lowerPipe;
         public GameObject scoreZone;
-        public GameObject shieldPrefab;//shield prefab
-        
+        public GameObject speedUpPrefab;
+
+        [Header("Pipe Settings")]
         public float gapX = 4f;
         public float gapY = 2f;
         public float minY = -1.5f;
@@ -17,13 +19,14 @@
         public int maxPipe = 5;
         public int minPipe = 5;
 
-        public float shieldChance = 0.5f;
-        public int minPipesBetweenShields = 10;
+        [Header("Speed Up Settings")]
+        public float speedUpChance = 0.5f;
+        public int minPipesBetweenSpeedUps = 10;
 
         private float upperBottomOffset;
         private float lowerTopOffset;
-        public int pipeCount = 0; //counts # of pipes for shield spawning
-        private int lastShieldPipe = 0;
+        public int pipeCount = 0; //counts # of pipes for speed up spawning
+        private int lastSpeedUpPipe = 0;
 
         private float nextX;
         private Queue<GameObject> pipes = new Queue<GameObject>();
@@ -48,27 +51,29 @@
                 pipes.Enqueue(Instantiate(lowerPipe, lowerPos, Quaternion.identity));
 
 
-                if (pipeCount - lastShieldPipe >= minPipesBetweenShields && UnityEngine.Random.value < shieldChance)
+                if (pipeCount - lastSpeedUpPipe >= minPipesBetweenSpeedUps
+                        && UnityEngine.Random.value < speedUpChance)
                 {
-                    float collectableY = centerY; //positions collectable in the middle of pipes
-
-                    Vector3 shieldPos = new Vector3(
+                    Vector3 modifierPos = new Vector3(
                         nextX,
-                        collectableY,
+                        centerY,
                         upperPipe.transform.position.z
                     );
-                    
 
-                    GameObject collectable = Instantiate(shieldPrefab, shieldPos, Quaternion.identity); //creates new collectable using prefab
-                    collectable.SetActive(true);
-                    Debug.Log("Collectable spawned at: " + collectable.transform.position);//more testing stuff
+                    GameObject modifier = Modifier.SpeedUp(
+                        speedUpPrefab,
+                        modifierPos
+                    );
 
-                    pipes.Enqueue(collectable);
-                    lastShieldPipe = pipeCount;
+                    if (modifier != null)
+                    {
+                        pipes.Enqueue(modifier);
+                        lastSpeedUpPipe = pipeCount;
+                    }
                 }
-                
 
-                GameObject zone = Instantiate(scoreZone, zonePos, Quaternion.identity);
+
+            GameObject zone = Instantiate(scoreZone, zonePos, Quaternion.identity);
                 zone.transform.localScale = new Vector3(zone.transform.localScale.x, gapY, 1f);
                 pipes.Enqueue(zone);
 

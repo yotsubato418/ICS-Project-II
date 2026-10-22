@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8041702073583143449}
   - component: {fileID: 4691455819847926905}
   - component: {fileID: 8353901980986216852}
-  - component: {fileID: 4391517573366790380}
+  - component: {fileID: 4264116193936326071}
   m_Layer: 0
   m_Name: Bird
   m_TagString: Player
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Score
   score: 0
   scoreText: {fileID: 0}
---- !u!114 &4391517573366790380
+--- !u!114 &4264116193936326071
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
