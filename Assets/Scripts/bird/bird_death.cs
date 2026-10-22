@@ -4,24 +4,23 @@ using UnityEngine.SceneManagement;
 public class BirdDeath : MonoBehaviour
 {
     public bool IsDead { get; private set; } = false;
-
     public float deathGravityScale = 1f;
 
     private Rigidbody2D rb;
     private Collider2D birdCollider;
     private SpriteRenderer birdRenderer;
-    private Movement movement;
     private Camera mainCamera;
     private Score score;
+    private Movement movement;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         birdCollider = GetComponent<Collider2D>();
         birdRenderer = GetComponentInChildren<SpriteRenderer>();
-        movement = GetComponent<Movement>();
         mainCamera = Camera.main;
         score = GetComponent<Score>();
+        movement = GetComponent<Movement>();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -34,7 +33,6 @@ public class BirdDeath : MonoBehaviour
             {
                 AudioManager.Instance.PlayTopHit();
             }
-
             Die();
         }
         else if (collision.gameObject.CompareTag("lowerPipe"))
@@ -43,34 +41,46 @@ public class BirdDeath : MonoBehaviour
             {
                 AudioManager.Instance.PlayBottomHit();
             }
-
             Die();
         }
     }
 
     void Die()
     {
-        if (IsDead) return; 
-        IsDead = true; 
+        if (IsDead) return;
+        IsDead = true;
 
-        FindFirstObjectByType<GameManager>().TriggerGameOver(); 
+        // 1. Grab the final score safely before resetting
+        int finalScore = 0;
+        if (score != null)
+        {
+            // Accessing the score variable from your Score.cs script
+            finalScore = score.score; 
+        }
+
+        // 2. Send the score to the GameManager
+        FindFirstObjectByType<GameManager>().GameOverWithScore(finalScore);
 
         if (score != null)
         {
             score.ResetScore();
         }
 
-        // stop horizontal movement and bounce upward
+        // Stop horizontal movement and bounce upward
         rb.gravityScale = deathGravityScale;
-        rb.linearVelocity = new Vector2(0, movement.flapStrength);
-
-        // prevent additional collisions
+        if (movement != null)
+        {
+            rb.linearVelocity = new Vector2(0, movement.flapStrength);
+        }
+        
+        // Prevent additional collisions
         birdCollider.enabled = false;
 
-        // immediately rotate upward
-        transform.rotation = Quaternion.Euler(
-            0, 0, movement.upwardRotation
-        );
+        // Immediately rotate upward
+        if (movement != null)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, movement.upwardRotation);
+        }
     }
 
     void Update()
@@ -80,13 +90,11 @@ public class BirdDeath : MonoBehaviour
             return;
         }
 
-        float bottomEdge = mainCamera.ViewportToWorldPoint(
-            new Vector3(0, 0, 0)
-        ).y;
+        float bottomEdge = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
 
         if (birdRenderer.bounds.max.y < bottomEdge)
         {
-            Die(); 
+            Die();
         }
     }
 }
