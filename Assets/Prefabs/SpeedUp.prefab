@@ -11,14 +11,14 @@ GameObject:
   - component: {fileID: 6524558771896276609}
   - component: {fileID: 6855653548460188730}
   - component: {fileID: 757398857726200953}
-  - component: {fileID: 7009042440543158215}
+  - component: {fileID: 8480203202155478683}
   m_Layer: 0
-  m_Name: Collectable_SpeedUp
+  m_Name: SpeedUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6524558771896276609
 Transform:
   m_ObjectHideFlags: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -138301563
   m_SortingLayer: 4
-  m_SortingOrder: -667
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4687309882487268517, guid: 2897ea32e3105804e86424da06d142b9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -129,7 +129,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.6900003
---- !u!114 &7009042440543158215
+--- !u!114 &8480203202155478683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,6 +138,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6732105853241790052}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b866cca9937e46648925ee4d89ba3f71, type: 3}
+  m_Script: {fileID: 11500000, guid: 306387e54b84fab499fd83387041dee5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ShieldCollectible
+  m_EditorClassIdentifier: Assembly-CSharp::Modifier
