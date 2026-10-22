@@ -1,46 +1,48 @@
-using UnityEngine; //monobehaviour, scenes, buttons, mouse/click, ienumerator, texts
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using System.Collections;
-using TMPro; 
+using TMPro;
 
-public class GameManager : MonoBehaviour //unity gamemaster blueprint
+public class GameManager : MonoBehaviour
 {
-    public GameObject startScreenPanel; //public slots
+    [Header("UI & References")]
+    public GameObject startScreenPanel;
     public GameObject gameOverScreenPanel;
-    public TextMeshProUGUI tutorialText; 
-    public Movement birdMovementScript; //took variable from movement script 
+    public TextMeshProUGUI countdownText; 
+    public Movement birdMovementScript;
 
-    public TextMeshProUGUI finalScoreText; 
+    [Header("Score Display")]
+    public TextMeshProUGUI finalScoreText;
     public TextMeshProUGUI finalHighScoreText;
 
-    //privates
-    private static bool skipTitleOnReload = false; //persists after reload static
+    private static bool skipTitleOnReload = false;
     private int currentScore = 0;
     private int highScore = 0;
 
-    void Start() 
+    void Start()
     {
-        highScore = PlayerPrefs.GetInt("HighScore", 0); //check
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
 
-        if (skipTitleOnReload == true)
+        if (skipTitleOnReload)
         {
-            skipTitleOnReload = false; //default
-            startScreenPanel.SetActive(false);
-            gameOverScreenPanel.SetActive(false);
-            StartCoroutine(ActivateGameplayFlow()); //tutorial starts
+            skipTitleOnReload = false;
+            if (startScreenPanel != null) startScreenPanel.SetActive(false);
+            if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(false);
+            StartCoroutine(ActivateGameplayFlow());
         }
         else
         {
-            Time.timeScale = 0; //pause time for title screen
-            startScreenPanel.SetActive(true);
-            gameOverScreenPanel.SetActive(false);
-            tutorialText.gameObject.SetActive(false);
-            birdMovementScript.enabled = false;
+            Time.timeScale = 0f;
+            if (startScreenPanel != null) startScreenPanel.SetActive(true);
+            if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(false);
+            if (countdownText != null) countdownText.gameObject.SetActive(false);
+            if (birdMovementScript != null) birdMovementScript.enabled = false;
         }
     }
 
-    private void OnApplicationQuit() //delete high score when you leave application
+    private void OnApplicationQuit()
     {
         PlayerPrefs.DeleteKey("HighScore");
         PlayerPrefs.Save();
@@ -48,74 +50,79 @@ public class GameManager : MonoBehaviour //unity gamemaster blueprint
 
     public void StartGame()
     {
-        startScreenPanel.SetActive(false);
-        Time.timeScale = 1; //resume time for tut and game
+        if (startScreenPanel != null) startScreenPanel.SetActive(false);
+        Time.timeScale = 1f;
         
-        // STOP DELETING THIS CODE ok music starts here joseph liu insert
+        // STOP DELETING THIS CODE
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlayMusic();
         }
 
-        StartCoroutine(ActivateGameplayFlow()); // tutorial starts 
+        StartCoroutine(ActivateGameplayFlow());
     }
 
-    IEnumerator ActivateGameplayFlow() 
+    IEnumerator ActivateGameplayFlow()
     {
-        birdMovementScript.enabled = false;
+        if (birdMovementScript != null) birdMovementScript.enabled = false;
 
-        while (Mouse.current.leftButton.isPressed)
+        while (Mouse.current != null && Mouse.current.leftButton.isPressed)
         {
-            yield return null; //stay here till button is done being pressed
+            yield return null;
         }
 
-        yield return null; //stay 4 1 more frame
+        yield return null;
 
-        birdMovementScript.enabled = true; //enables the bird to move (its here cause the loop below freezes it anyways)
-        tutorialText.gameObject.SetActive(true);
-        tutorialText.text = "PRESS SPACE / CLICK TO START";
+        if (birdMovementScript != null) birdMovementScript.enabled = true;
+
+        if (countdownText != null) 
+        {
+            countdownText.gameObject.SetActive(true);
+            countdownText.text = "PRESS SPACE / CLICK TO START";
+        }
 
         bool pressed = false;
         while (!pressed)
         {
-            bool space = (Keyboard.current.spaceKey.wasPressedThisFrame); //sets 2 true
-            bool mouse = (Mouse.current.leftButton.wasPressedThisFrame);
+            bool space = (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame);
+            bool mouse = (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame);
 
-            if (space || mouse) pressed = true; //when this is set to true 1 more frame then ends loop
+            if (space || mouse) pressed = true;
             yield return null;
         }
 
-        tutorialText.gameObject.SetActive(false); 
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
     }
 
-    public void GameOverWithScore(int inGameScore) //bird death script sends ingamescore as score
+    public void GameOverWithScore(int inGameScore)
     {
-        currentScore = inGameScore; //current score, ingamescore, and bird death score match up
+        currentScore = inGameScore;
 
         if (currentScore > highScore)
         {
-            highScore = currentScore; //sets high score to current score if its applicable
-            PlayerPrefs.SetInt("HighScore", highScore); //saves it from reloading scene
+            highScore = currentScore;
+            PlayerPrefs.SetInt("HighScore", highScore);
             PlayerPrefs.Save();
         }
 
-        Time.timeScale = 0;
-        gameOverScreenPanel.SetActive(true);
-        finalScoreText.text = currentScore.ToString();
-        finalHighScoreText.text = highScore.ToString(); //set text to text
-    } //these are in gameover panel so dont needa activate them
+        Time.timeScale = 0f;
+        if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(true);
+        if (finalScoreText != null) finalScoreText.text = currentScore.ToString();
+        if (finalHighScoreText != null) finalHighScoreText.text = highScore.ToString();
+    }
 
     public void OnRetryButtonClicked()
     {
-        skipTitleOnReload = true; //for the start method
-        Time.timeScale = 1; //lets game flow
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  //reload
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+        skipTitleOnReload = true;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void OnMainMenuButtonClicked()
     {
         skipTitleOnReload = false;
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
