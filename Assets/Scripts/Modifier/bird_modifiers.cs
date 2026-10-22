@@ -37,6 +37,7 @@ public class BirdModifiers : MonoBehaviour
     private bool directionActive;
     private bool shrinkActive;
     private bool ghostActive;
+    private bool cheatGhostActive = false;
 
     void Awake()
     {
@@ -127,7 +128,7 @@ public class BirdModifiers : MonoBehaviour
         else if (speedUpActive)
             color = Color.pink;
 
-        if (ghostActive)
+        if (ghostActive || cheatGhostActive)
             color.a = originalColor.a * ghostOpacity;
         else
             color.a = originalColor.a;
@@ -214,25 +215,17 @@ public class BirdModifiers : MonoBehaviour
     private IEnumerator GhostEffect()
     {
         ghostActive = true;
-        UpdateColor();
-
-        Physics2D.IgnoreLayerCollision(
-            birdLayer, pipeLayer, true
-        );
+        UpdateGhostState();
 
         yield return new WaitForSeconds(ghostDuration);
 
-        Physics2D.IgnoreLayerCollision(
-            birdLayer, pipeLayer, false
-        );
-
         ghostActive = false;
-        UpdateColor();
+        UpdateGhostState();
     }
 
     private void OnDisable()
     {
-        if (ghostActive && pipeLayer >= 0)
+        if ((ghostActive || cheatGhostActive) && pipeLayer >= 0)
         {
             Physics2D.IgnoreLayerCollision(
                 birdLayer, pipeLayer, false
@@ -252,6 +245,7 @@ public class BirdModifiers : MonoBehaviour
         directionActive = false;
         shrinkActive = false;
         ghostActive = false;
+        cheatGhostActive = false;
 
         transform.localScale = originalScale;
 
@@ -261,4 +255,42 @@ public class BirdModifiers : MonoBehaviour
             birdSprite.color = originalColor;
         }
     }
+
+
+    public void ActivateGhostCheat()
+    {
+        if (cheatGhostActive)
+            return;
+
+        cheatGhostActive = true;
+        UpdateGhostState();
+    }
+
+    public void DeactivateGhostCheat()
+    {
+        if (!cheatGhostActive)
+            return;
+
+        cheatGhostActive = false;
+        UpdateGhostState();
+    }
+
+    private void UpdateGhostState()
+    {
+        // ghost stays enabled if either the normal
+        // modifier or the cheat is active.
+        bool shouldBeGhost = ghostActive || cheatGhostActive;
+
+        if (pipeLayer >= 0)
+        {
+            Physics2D.IgnoreLayerCollision(
+                birdLayer,
+                pipeLayer,
+                shouldBeGhost
+            );
+        }
+
+        UpdateColor();
+    }
+
 }

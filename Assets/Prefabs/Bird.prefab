@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4691455819847926905}
   - component: {fileID: 8353901980986216852}
   - component: {fileID: 663326562699941178}
+  - component: {fileID: 8270986493500000486}
   m_Layer: 0
   m_Name: Bird
   m_TagString: Player
@@ -252,3 +253,16 @@ MonoBehaviour:
   shrinkDuration: 5
   ghostDuration: 4
   pipeLayerName: Pipes
+  ghostOpacity: 0.6
+--- !u!114 &8270986493500000486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4213220412318271812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062e0b7214b9f1b4894e7c5c8e98d397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KonamiCode
