@@ -4,17 +4,15 @@ public class Modifier : MonoBehaviour
 {
     public enum ModifierType
     {
-        SpeedUp,
-        SlowDown,
-        FlipGravity,
-        FlipDirection,
-        MakesSmaller,
-        Ghost
+        SlowDown = 1,
+        FlipGravity = 2,
+        FlipDirection = 3,
+        MakesSmaller = 4,
+        Ghost = 5
     }
 
     private ModifierType type;
 
-    // create a modifier of any type
     public static GameObject Spawn(
         GameObject prefab,
         Vector3 position,
@@ -36,7 +34,10 @@ public class Modifier : MonoBehaviour
 
         if (modifier == null)
         {
-            Debug.LogError("Prefab needs a Modifier component!");
+            Debug.LogError(
+                "Prefab needs a Modifier component!"
+            );
+
             Destroy(obj);
             return null;
         }
@@ -47,7 +48,6 @@ public class Modifier : MonoBehaviour
         return obj;
     }
 
-    // shared collision detection
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player"))

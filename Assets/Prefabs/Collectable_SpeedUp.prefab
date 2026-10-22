@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6524558771896276609}
   - component: {fileID: 6855653548460188730}
   - component: {fileID: 757398857726200953}
-  - component: {fileID: 8480203202155478683}
+  - component: {fileID: 7604605594527459081}
   m_Layer: 0
-  m_Name: SpeedUp
+  m_Name: Collectable_SpeedUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +129,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.6900003
---- !u!114 &8480203202155478683
+--- !u!114 &7604605594527459081
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,6 +138,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6732105853241790052}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306387e54b84fab499fd83387041dee5, type: 3}
+  m_Script: {fileID: 11500000, guid: f03895f5f33a057459f264f9e3426469, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Modifier
+  m_EditorClassIdentifier: Assembly-CSharp::collision

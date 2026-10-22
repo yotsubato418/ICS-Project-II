@@ -3,10 +3,9 @@ using System.Collections;
 
 public class BirdModifiers : MonoBehaviour
 {
-    [Header("Speed Modifiers")]
-    [SerializeField] private float speedUpMultiplier = 2f;
+    [Header("Slow Down")]
     [SerializeField] private float slowDownMultiplier = 0.5f;
-    [SerializeField] private float speedDuration = 3f;
+    [SerializeField] private float slowDownDuration = 3f;
 
     [Header("Gravity and Direction")]
     [SerializeField] private float gravityDuration = 4f;
@@ -19,11 +18,13 @@ public class BirdModifiers : MonoBehaviour
     [Header("Ghost Modifier")]
     [SerializeField] private float ghostDuration = 4f;
     [SerializeField] private string pipeLayerName = "Pipes";
+
     [SerializeField, Range(0f, 1f)]
     private float ghostOpacity = 0.6f;
 
     private Movement movement;
     private SpriteRenderer birdSprite;
+
     private Vector3 originalScale;
     private Color originalColor;
     private bool originalFlipY;
@@ -31,13 +32,12 @@ public class BirdModifiers : MonoBehaviour
     private int birdLayer;
     private int pipeLayer;
 
-    private bool speedUpActive;
     private bool slowDownActive;
     private bool gravityActive;
     private bool directionActive;
     private bool shrinkActive;
     private bool ghostActive;
-    private bool cheatGhostActive = false;
+    private bool cheatGhostActive;
 
     void Awake()
     {
@@ -63,11 +63,6 @@ public class BirdModifiers : MonoBehaviour
     {
         switch (type)
         {
-            case Modifier.ModifierType.SpeedUp:
-                if (!speedUpActive)
-                    StartCoroutine(SpeedUpEffect());
-                break;
-
             case Modifier.ModifierType.SlowDown:
                 if (!slowDownActive)
                     StartCoroutine(SlowDownEffect());
@@ -95,21 +90,12 @@ public class BirdModifiers : MonoBehaviour
         }
     }
 
-    // recalculate speed when effects overlap
     private void UpdateSpeed()
     {
-        float multiplier = 1f;
-
-        if (speedUpActive)
-            multiplier *= speedUpMultiplier;
-
-        if (slowDownActive)
-            multiplier *= slowDownMultiplier;
-
-        movement.speedMultiplier = multiplier;
+        movement.speedMultiplier =
+            slowDownActive ? slowDownMultiplier : 1f;
     }
 
-    // choose colour based on active modifiers
     private void UpdateColor()
     {
         if (birdSprite == null)
@@ -125,8 +111,6 @@ public class BirdModifiers : MonoBehaviour
             color = Color.green;
         else if (slowDownActive)
             color = Color.blue;
-        else if (speedUpActive)
-            color = Color.pink;
 
         if (ghostActive || cheatGhostActive)
             color.a = originalColor.a * ghostOpacity;
@@ -136,26 +120,13 @@ public class BirdModifiers : MonoBehaviour
         birdSprite.color = color;
     }
 
-    private IEnumerator SpeedUpEffect()
-    {
-        speedUpActive = true;
-        UpdateSpeed();
-        UpdateColor();
-
-        yield return new WaitForSeconds(speedDuration);
-
-        speedUpActive = false;
-        UpdateSpeed();
-        UpdateColor();
-    }
-
     private IEnumerator SlowDownEffect()
     {
         slowDownActive = true;
         UpdateSpeed();
         UpdateColor();
 
-        yield return new WaitForSeconds(speedDuration);
+        yield return new WaitForSeconds(slowDownDuration);
 
         slowDownActive = false;
         UpdateSpeed();
@@ -208,6 +179,7 @@ public class BirdModifiers : MonoBehaviour
         yield return new WaitForSeconds(shrinkDuration);
 
         transform.localScale = originalScale;
+
         shrinkActive = false;
         UpdateColor();
     }
@@ -223,40 +195,7 @@ public class BirdModifiers : MonoBehaviour
         UpdateGhostState();
     }
 
-    private void OnDisable()
-    {
-        if ((ghostActive || cheatGhostActive) && pipeLayer >= 0)
-        {
-            Physics2D.IgnoreLayerCollision(
-                birdLayer, pipeLayer, false
-            );
-        }
-
-        if (movement != null)
-        {
-            movement.speedMultiplier = 1f;
-            movement.gravityFlipped = false;
-            movement.direction = 1;
-        }
-
-        speedUpActive = false;
-        slowDownActive = false;
-        gravityActive = false;
-        directionActive = false;
-        shrinkActive = false;
-        ghostActive = false;
-        cheatGhostActive = false;
-
-        transform.localScale = originalScale;
-
-        if (birdSprite != null)
-        {
-            birdSprite.flipY = originalFlipY;
-            birdSprite.color = originalColor;
-        }
-    }
-
-
+    // Konami Code activation
     public void ActivateGhostCheat()
     {
         if (cheatGhostActive)
@@ -264,8 +203,11 @@ public class BirdModifiers : MonoBehaviour
 
         cheatGhostActive = true;
         UpdateGhostState();
+
+        Debug.Log("Permanent Ghost mode ON");
     }
 
+    // Konami Code deactivation
     public void DeactivateGhostCheat()
     {
         if (!cheatGhostActive)
@@ -273,13 +215,14 @@ public class BirdModifiers : MonoBehaviour
 
         cheatGhostActive = false;
         UpdateGhostState();
+
+        Debug.Log("Permanent Ghost mode OFF");
     }
 
     private void UpdateGhostState()
     {
-        // ghost stays enabled if either the normal
-        // modifier or the cheat is active.
-        bool shouldBeGhost = ghostActive || cheatGhostActive;
+        bool shouldBeGhost =
+            ghostActive || cheatGhostActive;
 
         if (pipeLayer >= 0)
         {
@@ -293,4 +236,39 @@ public class BirdModifiers : MonoBehaviour
         UpdateColor();
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+
+        if (pipeLayer >= 0)
+        {
+            Physics2D.IgnoreLayerCollision(
+                birdLayer,
+                pipeLayer,
+                false
+            );
+        }
+
+        slowDownActive = false;
+        gravityActive = false;
+        directionActive = false;
+        shrinkActive = false;
+        ghostActive = false;
+        cheatGhostActive = false;
+
+        if (movement != null)
+        {
+            movement.speedMultiplier = 1f;
+            movement.gravityFlipped = false;
+            movement.direction = 1;
+        }
+
+        transform.localScale = originalScale;
+
+        if (birdSprite != null)
+        {
+            birdSprite.flipY = originalFlipY;
+            birdSprite.color = originalColor;
+        }
+    }
 }

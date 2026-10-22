@@ -8,12 +8,31 @@ public class pipe_spawner : MonoBehaviour
     public GameObject lowerPipe;
     public GameObject scoreZone;
 
-    [Header("Horizontal Spawning")]
+    [Header("Speed Up")]
+    public GameObject shieldPrefab;
+    public float shieldChance = 0.5f;
+    public int minPipesBetweenShields = 10;
+
+    [Header("Other Modifiers")]
+    [Range(0f, 1f)]
+    public float modifierChance = 0.5f;
+    public int minPipesBetweenModifiers = 10;
+
+    [System.Serializable]
+    public class ModifierPrefab
+    {
+        public Modifier.ModifierType type;
+        public GameObject prefab;
+    }
+
+    public ModifierPrefab[] modifierPrefabs;
+
+    [Header("Pipe Settings")]
     public float gapX = 4f;
     public float gapY = 2f;
     public float startOffset = 3f;
-    public int maxPipeRender = 5;
-    public int minPipeRender = 5;
+    public int maxPipe = 5;
+    public int minPipe = 5;
 
     [Header("Vertical Spawning")]
     public float universalMinY = -2f;
@@ -23,46 +42,22 @@ public class pipe_spawner : MonoBehaviour
     [Header("Pipe Positioning")]
     public float upperPipeXOffset = 0.5f;
 
-    [System.Serializable]
-    public class ModifierPrefab
-    {
-        public Modifier.ModifierType type;
-        public GameObject prefab;
-    }
-
-    [Header("Modifier Settings")]
-    [Range(0f, 1f)]
-    public float modifierChance = 0.5f;
-
-    public int minPipesBetweenModifiers = 10;
-
-    public ModifierPrefab[] modifierPrefabs;
-
-    private int lastModifierPipe = 0;
-
     private float upperBottomOffset;
     private float lowerTopOffset;
 
     public int pipeCount = 0;
 
+    private int lastShieldPipe = 0;
+    private int lastModifierPipe = 0;
+
     private float nextX;
     private float previousY;
     private bool hasPreviousPipe = false;
 
-    private Camera cam;
     private Queue<GameObject> pipes = new Queue<GameObject>();
 
     void Start()
     {
-        cam = GetComponent<Camera>();
-
-        if (cam == null)
-        {
-            Debug.LogError("Pipe spawner needs a Camera component!");
-            enabled = false;
-            return;
-        }
-
         nextX = transform.position.x + startOffset;
 
         upperBottomOffset = GetBottomOffset(upperPipe);
@@ -71,7 +66,7 @@ public class pipe_spawner : MonoBehaviour
 
     void LateUpdate()
     {
-        while (nextX < transform.position.x + maxPipeRender * gapX)
+        while (nextX < transform.position.x + maxPipe * gapX)
         {
             float centerY = GetNextPipeY();
 
@@ -101,11 +96,36 @@ public class pipe_spawner : MonoBehaviour
                 lowerPipe, lowerPos, Quaternion.identity
             ));
 
+            bool shieldSpawned = false;
 
-            if (pipeCount - lastModifierPipe >= minPipesBetweenModifiers
-                && Random.value < modifierChance)
+
+            // anna's collectable spawn code
+            if (pipeCount - lastShieldPipe >= minPipesBetweenShields && UnityEngine.Random.value < shieldChance)
             {
-                // collect all configured modifier prefabs
+                float collectableY = centerY; //positions collectable in the middle of pipes
+
+                Vector3 shieldPos = new Vector3(
+                    nextX,
+                    collectableY,
+                    upperPipe.transform.position.z
+                );
+
+                GameObject collectable = Instantiate(shieldPrefab, shieldPos, Quaternion.identity); //creates new collectable using prefab
+
+                collectable.SetActive(true);
+
+                Debug.Log("Collectable spawned at: " + collectable.transform.position);//more testing stuff
+
+                pipes.Enqueue(collectable);
+                lastShieldPipe = pipeCount;
+
+                shieldSpawned = true;
+            }
+
+            if (!shieldSpawned
+                && pipeCount - lastModifierPipe >= minPipesBetweenModifiers
+                && UnityEngine.Random.value < modifierChance)
+            {
                 List<ModifierPrefab> availableModifiers =
                     new List<ModifierPrefab>();
 
@@ -119,12 +139,11 @@ public class pipe_spawner : MonoBehaviour
 
                 if (availableModifiers.Count > 0)
                 {
-                    // randomly select a modifier
-                    int index = Random.Range(
+                    int index = UnityEngine.Random.Range(
                         0, availableModifiers.Count
                     );
 
-                    ModifierPrefab selectedModifier =
+                    ModifierPrefab selected =
                         availableModifiers[index];
 
                     Vector3 modifierPos = new Vector3(
@@ -134,9 +153,9 @@ public class pipe_spawner : MonoBehaviour
                     );
 
                     GameObject modifier = Modifier.Spawn(
-                        selectedModifier.prefab,
+                        selected.prefab,
                         modifierPos,
-                        selectedModifier.type
+                        selected.type
                     );
 
                     if (modifier != null)
@@ -146,7 +165,6 @@ public class pipe_spawner : MonoBehaviour
                     }
                 }
             }
-
 
             GameObject zone = Instantiate(
                 scoreZone, zonePos, Quaternion.identity
@@ -164,15 +182,14 @@ public class pipe_spawner : MonoBehaviour
             pipeCount++;
         }
 
-        while (pipes.Count > 0 &&
-            pipes.Peek().transform.position.x <
-            transform.position.x - minPipeRender * gapX)
+        while (pipes.Count > 0
+            && pipes.Peek().transform.position.x
+            < transform.position.x - minPipe * gapX)
         {
             Destroy(pipes.Dequeue());
         }
     }
 
-    // calculate the next pipe's vertical position
     float GetNextPipeY()
     {
         float minSpawnY = universalMinY;
@@ -191,7 +208,9 @@ public class pipe_spawner : MonoBehaviour
             );
         }
 
-        float newY = Random.Range(minSpawnY, maxSpawnY);
+        float newY = UnityEngine.Random.Range(
+            minSpawnY, maxSpawnY
+        );
 
         previousY = newY;
         hasPreviousPipe = true;
