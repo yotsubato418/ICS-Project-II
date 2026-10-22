@@ -7,6 +7,7 @@ public class pipe_spawner : MonoBehaviour
     public GameObject upperPipe;
     public GameObject lowerPipe;
     public GameObject scoreZone;
+    public GameObject upperLimit;
 
     [Header("Speed Up")]
     public GameObject shieldPrefab;
@@ -95,6 +96,19 @@ public class pipe_spawner : MonoBehaviour
             pipes.Enqueue(Instantiate(
                 lowerPipe, lowerPos, Quaternion.identity
             ));
+
+            if (upperLimit != null)
+            {
+                Vector3 limitPos = new Vector3(
+                    nextX,
+                    upperLimit.transform.position.y,
+                    upperLimit.transform.position.z
+                );
+
+                pipes.Enqueue(Instantiate(
+                    upperLimit, limitPos, Quaternion.identity
+                ));
+            }
 
             bool shieldSpawned = false;
 

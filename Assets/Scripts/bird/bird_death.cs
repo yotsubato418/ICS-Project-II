@@ -43,6 +43,10 @@ public class BirdDeath : MonoBehaviour
             }
             Die();
         }
+        else if (collision.gameObject.CompareTag("Upper Limit"))
+        {
+            Die();
+        }
     }
 
     void Die()

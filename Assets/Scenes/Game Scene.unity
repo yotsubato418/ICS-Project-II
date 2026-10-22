@@ -714,8 +714,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::background_rep
   bgPrefab: {fileID: 4422679441103375902, guid: 2c055d4ec2bfe4958ada674aa830b175, type: 3}
-  maxBlock: 2
-  minBlock: 1
+  maxBlock: 4
+  minBlock: 4
 --- !u!114 &519420035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,6 +731,7 @@ MonoBehaviour:
   upperPipe: {fileID: 4160829391017412515, guid: 973c9ab5e6441ed499bee8e80887c3e6, type: 3}
   lowerPipe: {fileID: 8530715811645248135, guid: 813f3d7a24910304196c0a92c30a078c, type: 3}
   scoreZone: {fileID: 4896908784579272403, guid: 8f1d7df5ff96a402ebe484bcdebacc2a, type: 3}
+  upperLimit: {fileID: 841488819290463025, guid: 4faf95e9e767345d58d52ff4381b66cd, type: 3}
   shieldPrefab: {fileID: 6732105853241790052, guid: 7fd549286b528d74493af403251bfc87, type: 3}
   shieldChance: 0.5
   minPipesBetweenShields: 10
@@ -738,7 +739,7 @@ MonoBehaviour:
   minPipesBetweenModifiers: 10
   modifierPrefabs:
   - type: 0
-    prefab: {fileID: 6732105853241790052, guid: 7fd549286b528d74493af403251bfc87, type: 3}
+    prefab: {fileID: 1891183007213108007, guid: 148d3d9aa35b2114fb2db00373182d86, type: 3}
   - type: 1
     prefab: {fileID: 3143726459151299359, guid: 16e99be8658524543a06f95b6a335a76, type: 3}
   - type: 2
@@ -747,13 +748,11 @@ MonoBehaviour:
     prefab: {fileID: 6409132888981798180, guid: e78ec35b5f442ff40940e1fd85ee6137, type: 3}
   - type: 4
     prefab: {fileID: 4210355727863466891, guid: b55722281cf4051499e4d67f437faa74, type: 3}
-  - type: 5
-    prefab: {fileID: 1891183007213108007, guid: 148d3d9aa35b2114fb2db00373182d86, type: 3}
   gapX: 4
   gapY: 2
   startOffset: 3
-  maxPipe: 5
-  minPipe: 5
+  maxPipe: 10
+  minPipe: 10
   universalMinY: -2
   universalMaxY: 1.5
   maxVerticalStep: 3

@@ -8,6 +8,7 @@ TagManager:
   - score
   - lowerPipe
   - upperPipe
+  - Upper Limit
   layers:
   - Default
   - TransparentFX
