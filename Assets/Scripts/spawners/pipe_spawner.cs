@@ -1,106 +1,189 @@
-    using UnityEngine;
-    using System.Collections.Generic;
-    using System;
+using UnityEngine;
+using System.Collections.Generic;
 
-    public class pipe_spawner : MonoBehaviour
+public class pipe_spawner : MonoBehaviour
+{
+    [Header("Prefabs")]
+    public GameObject upperPipe;
+    public GameObject lowerPipe;
+    public GameObject scoreZone;
+    public GameObject speedUpPrefab;
+
+    [Header("Horizontal Spawning")]
+    public float gapX = 4f;
+    public float gapY = 2f;
+    public float startOffset = 3f;
+    public int maxPipeRender = 5;
+    public int minPipeRender = 5;
+
+    [Header("Vertical Spawning")]
+    public float universalMinY = -2f;
+    public float universalMaxY = 1.5f;
+    public float maxVerticalStep = 3f;
+
+    [Header("Pipe Positioning")]
+    public float upperPipeXOffset = 0.5f;
+
+    [Header("Speed Up Settings")]
+    public float speedUpChance = 0.5f;
+    public int minPipesBetweenSpeedUps = 10;
+
+    private float upperBottomOffset;
+    private float lowerTopOffset;
+
+    public int pipeCount = 0;
+    private int lastSpeedUpPipe = 0;
+
+    private float nextX;
+    private float previousY;
+    private bool hasPreviousPipe = false;
+
+    private Camera cam;
+    private Queue<GameObject> pipes = new Queue<GameObject>();
+
+    void Start()
     {
-        [Header("Prefabs")]
-        public GameObject upperPipe;
-        public GameObject lowerPipe;
-        public GameObject scoreZone;
-        public GameObject speedUpPrefab;
+        cam = GetComponent<Camera>();
 
-        [Header("Pipe Settings")]
-        public float gapX = 4f;
-        public float gapY = 2f;
-        public float minY = -1.5f;
-        public float maxY = 1.5f;
-        public float startOffset = 3f;
-        public int maxPipe = 5;
-        public int minPipe = 5;
-
-        [Header("Speed Up Settings")]
-        public float speedUpChance = 0.5f;
-        public int minPipesBetweenSpeedUps = 10;
-
-        private float upperBottomOffset;
-        private float lowerTopOffset;
-        public int pipeCount = 0; //counts # of pipes for speed up spawning
-        private int lastSpeedUpPipe = 0;
-
-        private float nextX;
-        private Queue<GameObject> pipes = new Queue<GameObject>();
-        void Start()
+        if (cam == null)
         {
-            nextX = transform.position.x + startOffset;
-            upperBottomOffset = GetBottomOffset(upperPipe);
-            lowerTopOffset = GetTopOffset(lowerPipe);
+            Debug.LogError("Pipe spawner needs a Camera component!");
+            enabled = false;
+            return;
         }
 
-        void LateUpdate()
+        nextX = transform.position.x + startOffset;
+
+        upperBottomOffset = GetBottomOffset(upperPipe);
+        lowerTopOffset = GetTopOffset(lowerPipe);
+    }
+
+    void LateUpdate()
+    {
+        while (nextX < transform.position.x + maxPipeRender * gapX)
         {
-            while (nextX < transform.position.x + maxPipe * gapX)
+            float centerY = GetNextPipeY();
+
+            Vector3 upperPos = new Vector3(
+                nextX + upperPipeXOffset,
+                centerY + gapY / 2f - upperBottomOffset,
+                upperPipe.transform.position.z
+            );
+
+            Vector3 lowerPos = new Vector3(
+                nextX,
+                centerY - gapY / 2f - lowerTopOffset,
+                lowerPipe.transform.position.z
+            );
+
+            Vector3 zonePos = new Vector3(
+                nextX,
+                centerY,
+                upperPipe.transform.position.z
+            );
+
+            pipes.Enqueue(Instantiate(
+                upperPipe, upperPos, Quaternion.identity
+            ));
+
+            pipes.Enqueue(Instantiate(
+                lowerPipe, lowerPos, Quaternion.identity
+            ));
+
+            // Spawn speed-up modifier
+            if (pipeCount - lastSpeedUpPipe >= minPipesBetweenSpeedUps
+                && Random.value < speedUpChance)
             {
-                float centerY = UnityEngine.Random.Range(minY, maxY);
+                Vector3 modifierPos = new Vector3(
+                    nextX,
+                    centerY,
+                    upperPipe.transform.position.z
+                );
 
-                Vector3 upperPos = new Vector3(nextX, centerY + gapY / 2f - upperBottomOffset, upperPipe.transform.position.z);
-                Vector3 lowerPos = new Vector3(nextX, centerY - gapY / 2f - lowerTopOffset, lowerPipe.transform.position.z);
-                Vector3 zonePos = new Vector3(nextX, centerY, upperPipe.transform.position.z);
+                GameObject modifier = Modifier.SpeedUp(
+                    speedUpPrefab,
+                    modifierPos
+                );
 
-                pipes.Enqueue(Instantiate(upperPipe, upperPos, Quaternion.identity));
-                pipes.Enqueue(Instantiate(lowerPipe, lowerPos, Quaternion.identity));
-
-
-                if (pipeCount - lastSpeedUpPipe >= minPipesBetweenSpeedUps
-                        && UnityEngine.Random.value < speedUpChance)
+                if (modifier != null)
                 {
-                    Vector3 modifierPos = new Vector3(
-                        nextX,
-                        centerY,
-                        upperPipe.transform.position.z
-                    );
-
-                    GameObject modifier = Modifier.SpeedUp(
-                        speedUpPrefab,
-                        modifierPos
-                    );
-
-                    if (modifier != null)
-                    {
-                        pipes.Enqueue(modifier);
-                        lastSpeedUpPipe = pipeCount;
-                    }
+                    pipes.Enqueue(modifier);
+                    lastSpeedUpPipe = pipeCount;
                 }
-
-
-            GameObject zone = Instantiate(scoreZone, zonePos, Quaternion.identity);
-                zone.transform.localScale = new Vector3(zone.transform.localScale.x, gapY, 1f);
-                pipes.Enqueue(zone);
-
-                nextX += gapX;
-                pipeCount++; //adds pipes by 1 each time!
-
             }
 
-            while (pipes.Count > 0 && pipes.Peek().transform.position.x < transform.position.x - minPipe * gapX)
-            {
-                Destroy(pipes.Dequeue());
-            }
+            GameObject zone = Instantiate(
+                scoreZone, zonePos, Quaternion.identity
+            );
+
+            zone.transform.localScale = new Vector3(
+                zone.transform.localScale.x,
+                gapY,
+                1f
+            );
+
+            pipes.Enqueue(zone);
+
+            nextX += gapX;
+            pipeCount++;
         }
 
-        float GetBottomOffset(GameObject prefab)
+        while (pipes.Count > 0 &&
+            pipes.Peek().transform.position.x <
+            transform.position.x - minPipeRender * gapX)
         {
-            SpriteRenderer sr = prefab.GetComponentInChildren<SpriteRenderer>();
-            float scaleY = Mathf.Abs(sr.transform.lossyScale.y);
-            float childY = sr.transform.position.y - prefab.transform.position.y;
-            return childY + sr.sprite.bounds.min.y * scaleY;
-        }
-
-        float GetTopOffset(GameObject prefab)
-        {
-            SpriteRenderer sr = prefab.GetComponentInChildren<SpriteRenderer>();
-            float scaleY = Mathf.Abs(sr.transform.lossyScale.y);
-            float childY = sr.transform.position.y - prefab.transform.position.y;
-            return childY + sr.sprite.bounds.max.y * scaleY;
+            Destroy(pipes.Dequeue());
         }
     }
+
+    // Calculate the next pipe's vertical position
+    float GetNextPipeY()
+    {
+        float minSpawnY = universalMinY;
+        float maxSpawnY = universalMaxY;
+
+        if (hasPreviousPipe)
+        {
+            minSpawnY = Mathf.Max(
+                universalMinY,
+                previousY - maxVerticalStep
+            );
+
+            maxSpawnY = Mathf.Min(
+                universalMaxY,
+                previousY + maxVerticalStep
+            );
+        }
+
+        float newY = Random.Range(minSpawnY, maxSpawnY);
+
+        previousY = newY;
+        hasPreviousPipe = true;
+
+        return newY;
+    }
+
+    float GetBottomOffset(GameObject prefab)
+    {
+        SpriteRenderer sr =
+            prefab.GetComponentInChildren<SpriteRenderer>();
+
+        float scaleY = Mathf.Abs(sr.transform.lossyScale.y);
+        float childY = sr.transform.position.y
+            - prefab.transform.position.y;
+
+        return childY + sr.sprite.bounds.min.y * scaleY;
+    }
+
+    float GetTopOffset(GameObject prefab)
+    {
+        SpriteRenderer sr =
+            prefab.GetComponentInChildren<SpriteRenderer>();
+
+        float scaleY = Mathf.Abs(sr.transform.lossyScale.y);
+        float childY = sr.transform.position.y
+            - prefab.transform.position.y;
+
+        return childY + sr.sprite.bounds.max.y * scaleY;
+    }
+}
