@@ -80,7 +80,6 @@ public class KonamiCode : MonoBehaviour
         {
             currentKey++;
 
-            // entire code entered successfully
             if (currentKey >= cheatCode.Length)
             {
                 birdModifiers.ActivateGhostCheat();

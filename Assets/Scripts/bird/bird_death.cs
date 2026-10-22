@@ -54,15 +54,12 @@ public class BirdDeath : MonoBehaviour
         if (IsDead) return;
         IsDead = true;
 
-        // 1. Grab the final score safely before resetting
         int finalScore = 0;
         if (score != null)
         {
-            // Accessing the score variable from your Score.cs script
             finalScore = score.score; 
         }
 
-        // 2. Send the score to the GameManager
         FindFirstObjectByType<GameManager>().GameOverWithScore(finalScore);
 
         if (score != null)
@@ -70,17 +67,14 @@ public class BirdDeath : MonoBehaviour
             score.ResetScore();
         }
 
-        // Stop horizontal movement and bounce upward
         rb.gravityScale = deathGravityScale;
         if (movement != null)
         {
             rb.linearVelocity = new Vector2(0, movement.flapStrength);
         }
-        
-        // Prevent additional collisions
+
         birdCollider.enabled = false;
 
-        // Immediately rotate upward
         if (movement != null)
         {
             transform.rotation = Quaternion.Euler(0, 0, movement.upwardRotation);

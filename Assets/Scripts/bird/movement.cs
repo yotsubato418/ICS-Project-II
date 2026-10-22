@@ -29,7 +29,6 @@ public class Movement : MonoBehaviour
         originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
 
-        // keep bird still before starting
         rb.linearVelocity = Vector2.zero;
     }
 
@@ -51,7 +50,6 @@ public class Movement : MonoBehaviour
             }
         }
 
-        // if not started exit method
         if (!started)
         {
             return;
@@ -60,7 +58,6 @@ public class Movement : MonoBehaviour
 
         float targetRotation;
 
-        // find whether the bird is moving against gravity
         float gravityDirection = gravityFlipped ? -1f : 1f;
 
         if (rb.linearVelocity.y * gravityDirection > 0)
@@ -72,7 +69,6 @@ public class Movement : MonoBehaviour
             targetRotation = downwardRotation;
         }
 
-        // reverse the rotation when gravity is flipped
         if (gravityFlipped)
         {
             targetRotation *= -1f;

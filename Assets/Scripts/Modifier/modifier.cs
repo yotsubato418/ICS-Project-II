@@ -20,7 +20,7 @@ public class Modifier : MonoBehaviour
     {
         if (prefab == null)
         {
-            Debug.LogError("Modifier prefab is missing!");
+            Debug.LogError("Modifier prefab is missing");
             return null;
         }
 
@@ -35,7 +35,7 @@ public class Modifier : MonoBehaviour
         if (modifier == null)
         {
             Debug.LogError(
-                "Prefab needs a Modifier component!"
+                "Prefab needs a Modifier component"
             );
 
             Destroy(obj);
