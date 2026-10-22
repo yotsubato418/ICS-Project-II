@@ -738,7 +738,7 @@ MonoBehaviour:
   modifierChance: 0.5
   minPipesBetweenModifiers: 10
   modifierPrefabs:
-  - type: 0
+  - type: 5
     prefab: {fileID: 1891183007213108007, guid: 148d3d9aa35b2114fb2db00373182d86, type: 3}
   - type: 1
     prefab: {fileID: 3143726459151299359, guid: 16e99be8658524543a06f95b6a335a76, type: 3}
@@ -752,7 +752,7 @@ MonoBehaviour:
   gapY: 2
   startOffset: 3
   maxPipe: 10
-  minPipe: 10
+  minPipe: 15
   universalMinY: -2
   universalMaxY: 1.5
   maxVerticalStep: 3

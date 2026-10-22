@@ -18,12 +18,14 @@ public class BirdModifiers : MonoBehaviour
     [Header("Ghost Modifier")]
     [SerializeField] private float ghostDuration = 4f;
     [SerializeField] private string pipeLayerName = "Pipes";
+    // [SerializeField] private float ghostExitClearance = 1.5f;
 
     [SerializeField, Range(0f, 1f)]
     private float ghostOpacity = 0.6f;
 
     private Movement movement;
     private SpriteRenderer birdSprite;
+    // private Collider2D birdCollider;
 
     private Vector3 originalScale;
     private Color originalColor;
@@ -43,6 +45,7 @@ public class BirdModifiers : MonoBehaviour
     {
         movement = GetComponent<Movement>();
         birdSprite = GetComponent<SpriteRenderer>();
+        // birdCollider = GetComponent<Collider2D>();
 
         originalScale = transform.localScale;
 
@@ -191,9 +194,31 @@ public class BirdModifiers : MonoBehaviour
 
         yield return new WaitForSeconds(ghostDuration);
 
+        // while (IsOverlappingPipe())
+        // {
+        //     yield return null;
+        // }
+
         ghostActive = false;
         UpdateGhostState();
     }
+
+    // private bool IsOverlappingPipe()
+    // {
+    //     if (birdCollider == null || pipeLayer < 0)
+    //     {
+    //         return false;
+    //     }
+
+    //     Bounds b = birdCollider.bounds;
+
+    //     Vector2 size = new Vector2(
+    //         b.size.x + ghostExitClearance * 2f,
+    //         b.size.y + 0.1f
+    //     );
+
+    //     return Physics2D.OverlapBox(b.center, size, 0f, 1 << pipeLayer) != null;
+    // }
 
     // Konami Code activation
     public void ActivateGhostCheat()
