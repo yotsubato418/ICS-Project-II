@@ -10,12 +10,12 @@ public class pipe_spawner : MonoBehaviour
 
     [Header("Speed Up")]
     public GameObject shieldPrefab;
-    public float shieldChance = 0.5f;
+    public float shieldChance = 1f / 6f;
     public int minPipesBetweenShields = 10;
 
-    [Header("Other Modifiers")]
+    [Header("Modifiers")]
     [Range(0f, 1f)]
-    public float modifierChance = 0.5f;
+    public float modifierChance = 1f;
     public int minPipesBetweenModifiers = 10;
 
     [System.Serializable]

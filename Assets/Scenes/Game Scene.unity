@@ -731,15 +731,9 @@ MonoBehaviour:
   upperPipe: {fileID: 4160829391017412515, guid: 973c9ab5e6441ed499bee8e80887c3e6, type: 3}
   lowerPipe: {fileID: 8530715811645248135, guid: 813f3d7a24910304196c0a92c30a078c, type: 3}
   scoreZone: {fileID: 4896908784579272403, guid: 8f1d7df5ff96a402ebe484bcdebacc2a, type: 3}
-  gapX: 4
-  gapY: 2
-  startOffset: 3
-  maxPipeRender: 5
-  minPipeRender: 5
-  universalMinY: -2
-  universalMaxY: 1.5
-  maxVerticalStep: 3
-  upperPipeXOffset: 0.25
+  shieldPrefab: {fileID: 6732105853241790052, guid: 7fd549286b528d74493af403251bfc87, type: 3}
+  shieldChance: 0.5
+  minPipesBetweenShields: 10
   modifierChance: 0.5
   minPipesBetweenModifiers: 10
   modifierPrefabs:
@@ -755,6 +749,15 @@ MonoBehaviour:
     prefab: {fileID: 4210355727863466891, guid: b55722281cf4051499e4d67f437faa74, type: 3}
   - type: 5
     prefab: {fileID: 1891183007213108007, guid: 148d3d9aa35b2114fb2db00373182d86, type: 3}
+  gapX: 4
+  gapY: 2
+  startOffset: 3
+  maxPipe: 5
+  minPipe: 5
+  universalMinY: -2
+  universalMaxY: 1.5
+  maxVerticalStep: 3
+  upperPipeXOffset: 0.25
   pipeCount: 0
 --- !u!1 &638994061
 GameObject:
