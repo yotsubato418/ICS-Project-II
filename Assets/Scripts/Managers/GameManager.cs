@@ -7,17 +7,15 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("UI Panels & Text")]
+    [Header("UI & References")]
     public GameObject startScreenPanel;
     public GameObject gameOverScreenPanel;
     public TextMeshProUGUI countdownText; 
-    public Movement birdMovementScript; // Your teammate's Movement script
+    public Movement birdMovementScript;
 
-    [Header("Score UI")]
-    public TextMeshProUGUI currentScoreText;
-    public TextMeshProUGUI highScoreText;
-    public TextMeshProUGUI finalScoreText;     // Shown on Game Over screen
-    public TextMeshProUGUI finalHighScoreText; // Shown on Game Over screen
+    [Header("Score Display")]
+    public TextMeshProUGUI finalScoreText;
+    public TextMeshProUGUI finalHighScoreText;
 
     private static bool skipTitleOnReload = false;
     private int currentScore = 0;
@@ -25,17 +23,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // Load saved high score
         highScore = PlayerPrefs.GetInt("HighScore", 0);
-        UpdateScoreUI();
 
         if (skipTitleOnReload)
         {
             skipTitleOnReload = false;
-
             if (startScreenPanel != null) startScreenPanel.SetActive(false);
             if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(false);
-            
             StartCoroutine(ActivateGameplayFlow());
         }
         else
@@ -44,13 +38,14 @@ public class GameManager : MonoBehaviour
             if (startScreenPanel != null) startScreenPanel.SetActive(true);
             if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(false);
             if (countdownText != null) countdownText.gameObject.SetActive(false);
-
-            // Keep movement disabled on the title screen so it ignores menu clicks
-            if (birdMovementScript != null)
-            {
-                birdMovementScript.enabled = false;
-            }
+            if (birdMovementScript != null) birdMovementScript.enabled = false;
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteKey("HighScore");
+        PlayerPrefs.Save();
     }
 
     public void StartGame()
@@ -58,6 +53,7 @@ public class GameManager : MonoBehaviour
         if (startScreenPanel != null) startScreenPanel.SetActive(false);
         Time.timeScale = 1f;
         
+        // STOP DELETING THIS CODE
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlayMusic();
@@ -68,58 +64,39 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ActivateGameplayFlow()
     {
-        // 1. Keep bird movement disabled while waiting for the menu button click to release
-        if (birdMovementScript != null)
-        {
-            birdMovementScript.enabled = false;
-        }
+        if (birdMovementScript != null) birdMovementScript.enabled = false;
 
         while (Mouse.current != null && Mouse.current.leftButton.isPressed)
         {
             yield return null;
         }
 
-        yield return null; // Extra frame buffer
+        yield return null;
 
-        // 2. Enable bird movement so its Start() runs and locks gravity to 0
-        if (birdMovementScript != null)
-        {
-            birdMovementScript.enabled = true;
-        }
+        if (birdMovementScript != null) birdMovementScript.enabled = true;
 
-        // 3. Show the caption text cleanly
         if (countdownText != null) 
         {
             countdownText.gameObject.SetActive(true);
             countdownText.text = "PRESS SPACE / CLICK TO START";
         }
 
-        // 4. Wait for a fresh click or space press to hide the caption
         bool pressed = false;
         while (!pressed)
         {
             bool space = (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame);
             bool mouse = (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame);
 
-            if (space || mouse)
-            {
-                pressed = true;
-            }
+            if (space || mouse) pressed = true;
             yield return null;
         }
 
-        // 5. Hide the caption text the exact moment you click
-        if (countdownText != null)
-        {
-            countdownText.gameObject.SetActive(false);
-        }
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
     }
 
-    // --- SCORE METHODS ---
-
-    public void AddScore(int amount)
+    public void GameOverWithScore(int inGameScore)
     {
-        currentScore += amount;
+        currentScore = inGameScore;
 
         if (currentScore > highScore)
         {
@@ -128,39 +105,15 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.Save();
         }
 
-        UpdateScoreUI();
-    }
-
-    void UpdateScoreUI()
-    {
-        if (currentScoreText != null) currentScoreText.text = "Score: " + currentScore;
-        if (highScoreText != null) highScoreText.text = "High Score: " + highScore;
-    }
-
-    // --- GAME OVER & RESTART ---
-
-    public void GameOver()
-    {
         Time.timeScale = 0f;
         if (gameOverScreenPanel != null) gameOverScreenPanel.SetActive(true);
-
-        // Populate Game Over text fields
-        if (finalScoreText != null) finalScoreText.text = "Score: " + currentScore;
-        if (finalHighScoreText != null) finalHighScoreText.text = "High Score: " + highScore;
-    }
-
-    public void TriggerGameOver()
-    {
-        GameOver();
+        if (finalScoreText != null) finalScoreText.text = currentScore.ToString();
+        if (finalHighScoreText != null) finalHighScoreText.text = highScore.ToString();
     }
 
     public void OnRetryButtonClicked()
     {
-        if (EventSystem.current != null)
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-        }
-
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
         skipTitleOnReload = true;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
