@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8041702073583143449}
   - component: {fileID: 4691455819847926905}
   - component: {fileID: 8353901980986216852}
-  - component: {fileID: 4264116193936326071}
+  - component: {fileID: 663326562699941178}
   m_Layer: 0
   m_Name: Bird
   m_TagString: Player
@@ -161,6 +161,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   moveSpeed: 3
   flapStrength: 5
+  speedMultiplier: 1
+  direction: 1
+  gravityFlipped: 0
   upwardRotation: 30
   downwardRotation: -90
   rotationSpeed: 5
@@ -228,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Score
   score: 0
   scoreText: {fileID: 0}
---- !u!114 &4264116193936326071
+--- !u!114 &663326562699941178
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,6 +240,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4213220412318271812}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bc0acc163b86c84280c32d2106f1856, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a293b0b4f2cb8f45872145c53aed168, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdSpeedBoost
+  m_EditorClassIdentifier: Assembly-CSharp::BirdModifiers
+  speedUpMultiplier: 2
+  slowDownMultiplier: 0.5
+  speedDuration: 3
+  gravityDuration: 4
+  directionDuration: 3
+  shrinkMultiplier: 0.6
+  shrinkDuration: 5
+  ghostDuration: 4
+  pipeLayerName: Pipes

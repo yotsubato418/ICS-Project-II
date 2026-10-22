@@ -6,6 +6,9 @@ public class Movement : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 3f;
     public float flapStrength = 5f;
+    [HideInInspector] public float speedMultiplier = 1f;
+    [HideInInspector] public int direction = 1;
+    [HideInInspector] public bool gravityFlipped = false;
 
     [Header("Rotation")]
     public float upwardRotation = 30f;
@@ -35,7 +38,7 @@ public class Movement : MonoBehaviour
         if (!birdDeath.IsDead)
         {
             bool pressed = (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame) || (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame);
-            
+
             if (pressed)
             {
                 if (!started)
@@ -54,19 +57,27 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        // rotate based on vertical velocity
+
         float targetRotation;
 
-        if (rb.linearVelocity.y > 0)
+        // find whether the bird is moving against gravity
+        float gravityDirection = gravityFlipped ? -1f : 1f;
+
+        if (rb.linearVelocity.y * gravityDirection > 0)
         {
-            targetRotation = upwardRotation; // precaution
+            targetRotation = upwardRotation;
         }
         else
         {
             targetRotation = downwardRotation;
         }
 
-        // rotation lerp
+        // reverse the rotation when gravity is flipped
+        if (gravityFlipped)
+        {
+            targetRotation *= -1f;
+        }
+
         float currentRotation = transform.eulerAngles.z;
 
         float newRotation = Mathf.LerpAngle(
@@ -75,35 +86,39 @@ public class Movement : MonoBehaviour
             rotationSpeed * Time.deltaTime
         );
 
-        transform.rotation = Quaternion.Euler(0, 0, newRotation);
+        transform.rotation = Quaternion.Euler(
+            0, 0, newRotation
+        );
     }
 
     void FixedUpdate()
     {
         if (!started || birdDeath.IsDead)
-        {
             return;
-        }
 
-        // constant horizontal movement
+        rb.gravityScale = originalGravity *
+            (gravityFlipped ? -1f : 1f);
+
         rb.linearVelocity = new Vector2(
-            moveSpeed,
+            moveSpeed * speedMultiplier * direction,
             rb.linearVelocity.y
         );
     }
 
     void Flap()
     {
-        // reset vertical velocity and jump
+        float flapDirection = gravityFlipped ? -1f : 1f;
+
         rb.linearVelocity = new Vector2(
             rb.linearVelocity.x,
-            flapStrength
+            flapStrength * flapDirection
         );
 
-        // immediately rotate upward
         transform.rotation = Quaternion.Euler(
-            0, 0, upwardRotation
+            0, 0,
+            upwardRotation * flapDirection
         );
+
         PlayFlapSound();
     }
 

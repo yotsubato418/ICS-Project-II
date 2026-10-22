@@ -731,16 +731,30 @@ MonoBehaviour:
   upperPipe: {fileID: 4160829391017412515, guid: 973c9ab5e6441ed499bee8e80887c3e6, type: 3}
   lowerPipe: {fileID: 8530715811645248135, guid: 813f3d7a24910304196c0a92c30a078c, type: 3}
   scoreZone: {fileID: 4896908784579272403, guid: 8f1d7df5ff96a402ebe484bcdebacc2a, type: 3}
-  speedUpPrefab: {fileID: 6732105853241790052, guid: 7fd549286b528d74493af403251bfc87, type: 3}
   gapX: 4
   gapY: 2
-  minY: -1.5
-  maxY: 1.5
   startOffset: 3
-  maxPipe: 5
-  minPipe: 5
-  speedUpChance: 0.5
-  minPipesBetweenSpeedUps: 10
+  maxPipeRender: 5
+  minPipeRender: 5
+  universalMinY: -2
+  universalMaxY: 1.5
+  maxVerticalStep: 3
+  upperPipeXOffset: 0.25
+  modifierChance: 0.5
+  minPipesBetweenModifiers: 10
+  modifierPrefabs:
+  - type: 0
+    prefab: {fileID: 6732105853241790052, guid: 7fd549286b528d74493af403251bfc87, type: 3}
+  - type: 1
+    prefab: {fileID: 3143726459151299359, guid: 16e99be8658524543a06f95b6a335a76, type: 3}
+  - type: 2
+    prefab: {fileID: 4500376563571627143, guid: b1bd56dead602954fb00e06f87c95b97, type: 3}
+  - type: 3
+    prefab: {fileID: 6409132888981798180, guid: e78ec35b5f442ff40940e1fd85ee6137, type: 3}
+  - type: 4
+    prefab: {fileID: 4210355727863466891, guid: b55722281cf4051499e4d67f437faa74, type: 3}
+  - type: 5
+    prefab: {fileID: 1891183007213108007, guid: 148d3d9aa35b2114fb2db00373182d86, type: 3}
   pipeCount: 0
 --- !u!1 &638994061
 GameObject:
@@ -2270,6 +2284,10 @@ PrefabInstance:
     - target: {fileID: 4213220412318271812, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
       propertyPath: m_Name
       value: Bird
+      objectReference: {fileID: 0}
+    - target: {fileID: 4213220412318271812, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5168215494135266469, guid: f36392a3a922440928c550bb79fa8fb6, type: 3}
       propertyPath: m_LocalPosition.x

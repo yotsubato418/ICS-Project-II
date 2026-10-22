@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6519007596478372397}
   - component: {fileID: 8274390551899905499}
   - component: {fileID: 8090629466536454334}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: UPPER green pipe
   m_TagString: upperPipe
   m_Icon: {fileID: 0}

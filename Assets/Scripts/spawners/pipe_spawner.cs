@@ -7,7 +7,6 @@ public class pipe_spawner : MonoBehaviour
     public GameObject upperPipe;
     public GameObject lowerPipe;
     public GameObject scoreZone;
-    public GameObject speedUpPrefab;
 
     [Header("Horizontal Spawning")]
     public float gapX = 4f;
@@ -24,15 +23,27 @@ public class pipe_spawner : MonoBehaviour
     [Header("Pipe Positioning")]
     public float upperPipeXOffset = 0.5f;
 
-    [Header("Speed Up Settings")]
-    public float speedUpChance = 0.5f;
-    public int minPipesBetweenSpeedUps = 10;
+    [System.Serializable]
+    public class ModifierPrefab
+    {
+        public Modifier.ModifierType type;
+        public GameObject prefab;
+    }
+
+    [Header("Modifier Settings")]
+    [Range(0f, 1f)]
+    public float modifierChance = 0.5f;
+
+    public int minPipesBetweenModifiers = 10;
+
+    public ModifierPrefab[] modifierPrefabs;
+
+    private int lastModifierPipe = 0;
 
     private float upperBottomOffset;
     private float lowerTopOffset;
 
     public int pipeCount = 0;
-    private int lastSpeedUpPipe = 0;
 
     private float nextX;
     private float previousY;
@@ -90,27 +101,52 @@ public class pipe_spawner : MonoBehaviour
                 lowerPipe, lowerPos, Quaternion.identity
             ));
 
-            // Spawn speed-up modifier
-            if (pipeCount - lastSpeedUpPipe >= minPipesBetweenSpeedUps
-                && Random.value < speedUpChance)
+
+            if (pipeCount - lastModifierPipe >= minPipesBetweenModifiers
+                && Random.value < modifierChance)
             {
-                Vector3 modifierPos = new Vector3(
-                    nextX,
-                    centerY,
-                    upperPipe.transform.position.z
-                );
+                // collect all configured modifier prefabs
+                List<ModifierPrefab> availableModifiers =
+                    new List<ModifierPrefab>();
 
-                GameObject modifier = Modifier.SpeedUp(
-                    speedUpPrefab,
-                    modifierPos
-                );
-
-                if (modifier != null)
+                foreach (ModifierPrefab entry in modifierPrefabs)
                 {
-                    pipes.Enqueue(modifier);
-                    lastSpeedUpPipe = pipeCount;
+                    if (entry != null && entry.prefab != null)
+                    {
+                        availableModifiers.Add(entry);
+                    }
+                }
+
+                if (availableModifiers.Count > 0)
+                {
+                    // randomly select a modifier
+                    int index = Random.Range(
+                        0, availableModifiers.Count
+                    );
+
+                    ModifierPrefab selectedModifier =
+                        availableModifiers[index];
+
+                    Vector3 modifierPos = new Vector3(
+                        nextX,
+                        centerY,
+                        upperPipe.transform.position.z
+                    );
+
+                    GameObject modifier = Modifier.Spawn(
+                        selectedModifier.prefab,
+                        modifierPos,
+                        selectedModifier.type
+                    );
+
+                    if (modifier != null)
+                    {
+                        pipes.Enqueue(modifier);
+                        lastModifierPipe = pipeCount;
+                    }
                 }
             }
+
 
             GameObject zone = Instantiate(
                 scoreZone, zonePos, Quaternion.identity
@@ -136,7 +172,7 @@ public class pipe_spawner : MonoBehaviour
         }
     }
 
-    // Calculate the next pipe's vertical position
+    // calculate the next pipe's vertical position
     float GetNextPipeY()
     {
         float minSpawnY = universalMinY;
